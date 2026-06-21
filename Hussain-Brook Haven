@@ -1,0 +1,309 @@
+- Hussein Hub V1 (2026 Orion Edition)
+-- Brookhaven Ultimate Hub - New Modern Interface
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({
+   Name = "Hussein Hub V1 - Brookhaven", 
+   HidePremium = false, 
+   SaveConfig = false, 
+   IntroText = "Hussein Hub 2026",
+   IntroIcon = "rbxassetid://4483362458"
+
+-- وظيفة جلب أسماء اللاعبين من السيرفر بشكل حيوي
+local function getPlayerNames()
+   local names = {}
+   for _, p in pairs(game.Players:GetPlayers()) do
+      if p ~= game.Players.LocalPlayer then 
+         table.insert(names, p.Name) 
+      end
+   end
+   return names
+end
+
+----------------------------------------------------
+-- [1] إنشاء الأقسام باللغة العربية
+----------------------------------------------------
+local HomeAR = Window:CreateTab("الرئيسية (AR)", 4483362458)
+local TeleportAR = Window:CreateTab("الانتقالات (AR)", 4483362458)
+local PlayerAR = Window:CreateTab("اللاعب والسيارات (AR)", 4483362458)
+
+HomeAR:CreateSection("مرحباً بك")
+HomeAR:CreateParagraph({Title = "Hussein Hub V1", Content = "مرحباً بك في سكربت بروك هافن المطور لعام (2026)"})
+
+-- خدعة البريميوم (جذب)
+HomeAR:CreateSection("الميزات الخاصة")
+HomeAR:CreateButton({
+   Name = "👑 تفعيل بريميوم مجاناً (Premium Unlocked)",
+   Callback = function()
+      Rayfield:Notify({
+         Title = "Premium Activated! 👑",
+         Content = "تم تفعيل حساب البريميوم بنجاح في السيرفر الحالي!",
+         Duration = 5,
+         Image = 4483362458,
+      })
+      local p = game.Players.LocalPlayer
+      if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+         local sound = Instance.new("Sound", p.Character.HumanoidRootPart)
+         sound.SoundId = "rbxassetid://9069609268"
+         sound:Play()
+         
+         local sparkle = Instance.new("Sparkles", p.Character.HumanoidRootPart)
+         sparkle.SparkleColor = Color3.fromRGB(255, 215, 0)
+         task.wait(4)
+         sparkle:Destroy()
+         sound:Destroy()
+      end
+   end,
+})
+
+-- قسم الانتقالات الدقيق
+TeleportAR:CreateSection("انتقالات الأماكن والمحلات")
+,
+})
+TeleportAR:CreateButton({
+   Name = "Go to supermarket (انتقال الى سوبر ماركت)",
+   Callback = function()
+      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if root then root.CFrame = CFrame.new(-22.5, 14.2, -145.8) end
+   end,
+})
+
+TeleportAR:CreateButton({
+   Name = "Go Underground (تحت الأرض / المكان السري)",
+   Callback = function()
+      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if root then root.CFrame = CFrame.new(-75.1, -40.3, 155.5) end
+   end,
+})
+
+PlayerAR:CreateSection("تعديلات اللاعب")
+PlayerAR:CreateButton({
+   Name = "Super WalkSpeed (سرعة خارقة)",
+   Callback = function()
+      if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 120
+      end
+   end,
+})
+PlayerAR:CreateButton({
+   Name = "Fly to Sky (طيران للسماء)",
+   Callback = function()
+      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if root then
+         local bv = Instance.new("BodyVelocity")
+         bv.Velocity = Vector3.new(0, 150, 0)
+         bv.MaxForce = Vector3.new(0, 100000, 0)
+         bv.Parent = root
+         task.wait(2.5)
+         bv:Destroy()
+      end
+   end,
+})
+
+-- تعديل قسم السيارات لفصل ميزة السرعة والمراجيح بشكل صحيح
+PlayerAR:CreateSection("تعديلات وتعديل سرعة السيارات")
+
+PlayerAR:CreateButton({
+   Name = "⚡ جعل سرعة سيارتك الحالية 200 (حقيقي)",
+   Callback = function()
+      local char = game.Players.LocalPlayer.Character
+      local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+      -- التحقق من أنك راكب داخل سيارة حالياً ليقوم بتعديل سرعتها فوراً
+      if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
+         local seat = humanoid.SeatPart
+         seat.MaxSpeed = 200
+         seat.Torque = 15000
+         if seat:FindFirstChild("VehicleEngine") then
+            seat.VehicleEngine.MaxSpeed = 200
+         end
+         Rayfield:Notify({Title = "Speed Set!", Content = "تم تعديل سرعة السيارة الحالية إلى 200 حقيقية!", Duration = 3})
+      else
+         Rayfield:Notify({Title = "تنبيه!", Content = "يجب أن تكون راكباً داخل مقعد السائق في السيارة أولاً!", Duration = 4})
+      end
+   end,
+})
+
+PlayerAR:CreateButton({
+   Name = "Hijack Closest Car (ركوب وسرقة أقرب سيارة فارغة)",
+   Callback = function()
+      local char = game.Players.LocalPlayer.Character
+      if char and char:FindFirstChild("HumanoidRootPart") then
+         local targetSeat = nil
+         local distance = math.huge
+         for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("VehicleSeat") and obj.Occupant == nil then
+               local d = (obj.Position - char.HumanoidRootPart.Position).Magnitude
+               if d < distance then 
+                  distance = d
+                  targetSeat = obj 
+               end
+            end
+         end
+         if targetSeat then
+            char.HumanoidRootPart.CFrame = targetSeat.CFrame + Vector3.new(0, 2, 0)
+            task.wait(0.2)
+            targetSeat:Sit(char:FindFirstChildOfClass("Humanoid"))
+         end
+      end
+   end,
+})
+
+PlayerAR:CreateSection("أدوات مراقبة السيرفر")
+
+local DropdownAR = PlayerAR:CreateDropdown({
+   Name = "اختر لاعب لمراقبته",
+   Options = getPlayerNames(),
+   CurrentOption = "",
+   MultipleOptions = false,
+   Callback = function(Option)
+      local selectedName = type(Option) == "table" and Option[1] or Option
+      if selectedName and selectedName ~= "" then
+         local target = game.Players:FindFirstChild(selectedName)
+         if target and target.Character and target.Character:FindFirstChildOfClass("Humanoid") then
+            workspace.CurrentCamera.CameraSubject = target.Character:FindFirstChildOfClass("Humanoid")
+         end
+      end
+   end,
+})
+PlayerAR:CreateButton({Name = "تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames(), true) end})
+PlayerAR:CreateButton({Name = "إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end})
+
+
+----------------------------------------------------
+-- [2] إنشاء الأقسام باللغة الإنجليزية
+----------------------------------------------------
+local HomeEN = Window:CreateTab("Home (EN)", 4483362458)
+local TeleportEN = Window:CreateTab("Teleports (EN)", 4483362458)
+local PlayerEN = Window:CreateTab("Player & Cars (EN)", 4483362458)
+
+HomeEN:CreateSection("Main Menu")
+HomeEN:CreateParagraph({Title = "Hussein Hub V1", Content = "Welcome to Brookhaven RP Premium Script (2026)"})
+
+HomeEN:CreateSection("Special Options")
+HomeEN:CreateButton({
+   Name = "👑 Free Premium Pass Unlock",
+   Callback = function()
+      Rayfield:Notify({
+         Title = "Premium Unlocked! 👑",
+         Content = "Brookhaven Premium active for current server session.",
+         Duration = 5,
+         Image = 4483362458,
+      })
+      local p = game.Players.LocalPlayer
+      if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+         local sound = Instance.new("Sound", p.Character.HumanoidRootPart)
+         sound.SoundId = "rbxassetid://9069609268"
+         sound:Play()
+         
+         local sparkle = Instance.new("Sparkles", p.Character.HumanoidRootPart)
+         sparkle.SparkleColor = Color3.fromRGB(255, 215, 0)
+         task.wait(4)
+         sparkle:Destroy()
+         sound:Destroy()
+      end
+   end,
+})
+
+TeleportEN:CreateButton({
+   Name = "Go to supermarket ",
+   Callback = function()
+      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if root then root.CFrame = CFrame.new(-22.5, 14.2, -145.8) end
+   end,
+})
+})
+TeleportEN:CreateButton({
+   Name = "Go Underground (Secret Agency)",
+   Callback = function()
+      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if root then root.CFrame = CFrame.new(-75.1, -40.3, 155.5) end
+   end,
+})
+
+PlayerEN:CreateSection("Player Tweaks")
+PlayerEN:CreateButton({
+   Name = "Super WalkSpeed",
+   Callback = function()
+      if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 120
+      end
+   end,
+})
+PlayerEN:CreateButton({
+   Name = "Fly to Sky",
+   Callback = function()
+      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if root then
+         local bv = Instance.new("BodyVelocity")
+         bv.Velocity = Vector3.new(0, 150, 0)
+         bv.MaxForce = Vector3.new(0, 100000, 0)
+         bv.Parent = root
+         task.wait(2.5)
+         bv:Destroy()
+      end
+   end,
+})
+
+PlayerEN:CreateSection("Vehicles Tweaks")
+PlayerEN:CreateButton({
+   Name = "⚡ Set Current Vehicle Speed to 200",
+   Callback = function()
+      local char = game.Players.LocalPlayer.Character
+      local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+      if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
+         local seat = humanoid.SeatPart
+         seat.MaxSpeed = 200
+         seat.Torque = 15000
+         if seat:FindFirstChild("VehicleEngine") then
+            seat.VehicleEngine.MaxSpeed = 200
+         end
+         Rayfield:Notify({Title = "Speed Set!", Content = "Vehicle speed set to 200!", Duration = 3})
+      else
+         Rayfield:Notify({Title = "Warning!", Content = "You must be driving a vehicle first!", Duration = 4})
+      end
+   end,
+})
+
+PlayerEN:CreateButton({
+   Name = "Hijack Closest Car",
+   Callback = function()
+      local char = game.Players.LocalPlayer.Character
+      if char and char:FindFirstChild("HumanoidRootPart") then
+         local targetSeat = nil
+         local distance = math.huge
+         for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("VehicleSeat") and obj.Occupant == nil then
+               local d = (obj.Position - char.HumanoidRootPart.Position).Magnitude
+               if d < distance then 
+                  distance = d
+                  targetSeat = obj 
+               end
+            end
+         end
+         if targetSeat then
+            char.HumanoidRootPart.CFrame = targetSeat.CFrame + Vector3.new(0, 2, 0)
+            task.wait(0.2)
+            targetSeat:Sit(char:FindFirstChildOfClass("Humanoid"))
+         end
+      end
+   end,
+})
+
+local DropdownEN = PlayerEN:CreateDropdown({
+   Name = "Choose Player to Spectate",
+   Options = getPlayerNames(),
+   CurrentOption = "",
+   MultipleOptions = false,
+   Callback = function(Option)
+      local selectedName = type(Option) == "table" and Option[1] or Option
+      if selectedName and selectedName ~= "" then
+         local target = game.Players:FindFirstChild(selectedName)
+         if target and target.Character and target.Character:FindFirstChildOfClass("Humanoid") then
+            workspace.CurrentCamera.CameraSubject = target.Character:FindFirstChildOfClass("Humanoid")
+         end
+      end
+   end,
+})
+PlayerEN:CreateButton({Name = "Refresh Players List", Callback = function() DropdownEN:Refresh(getPlayerNames(), true) end})
+PlayerEN:CreateButton({Name = "Stop Spectating", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end})
