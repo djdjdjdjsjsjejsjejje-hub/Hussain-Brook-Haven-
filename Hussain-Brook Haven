@@ -1,18 +1,17 @@
 -- Hussein Hub V1 (2026 WindUI Edition)
--- Fixed All Syntax Errors & Cleaned Code
+-- The Ultimate Edition: Exploits, Anti-Flings & Vehicles Unlocked!
 
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
--- [تعديل] إغلاق الأقواس بشكل صحيح وبناء النافذة
 local Window = WindUI:CreateWindow({
    Title = "Hussein Hub V1",
    SubTitle = "Brookhaven RP (2026)",
    Author = "by hussain_90_1",
-   Size = UDim2.fromOffset(560, 400),
+   Size = UDim2.fromOffset(580, 500),
    Transparent = true
 })
 
--- وظيفة جلب أسماء اللاعبين من السيرفر بشكل حيوي
+-- وظيفة جلب أسماء اللاعبين
 local function getPlayerNames()
    local names = {}
    for _, p in pairs(game.Players:GetPlayers()) do
@@ -24,60 +23,189 @@ local function getPlayerNames()
 end
 
 ----------------------------------------------------
--- [1] إنشاء الأقسام باللغة العربية (WindUI Style)
+-- [1] قسم الرئيسية والأسماء الملونة
 ----------------------------------------------------
-local TabAR = Window:Tab({ Title = "الرئيسية (AR)", Icon = "rbxassetid://4483362458" })
+local TabHome = Window:Tab({ Title = "الرئيسية (RGB)", Icon = "rbxassetid://4483362458" })
 
-TabAR:Section({ Title = "مرحباً بك" })
-TabAR:Paragraph({ Title = "Hussein Hub V1", Desc = "مرحباً بك في سكربت بروك هافن المطور لعام (2026)" })
+TabHome:Section({ Title = "🌈 تلوين تلقائي (محاكاة لوحة الألوان)" })
 
-TabAR:Section({ Title = "الميزات الخاصة" })
-TabAR:Button({
-   Title = "👑 تفعيل بريميوم مجاناً (Premium Unlocked)",
-   Callback = function()
-      -- [تعديل] تحويل إشعارات Rayfield التالفة إلى إشعارات WindUI الصحيحة
-      WindUI:Notify({
-         Title = "Premium Activated! 👑",
-         Content = "تم تفعيل حساب البريميوم بنجاح في السيرفر الحالي!",
-         Duration = 5
-      })
-      local p = game.Players.LocalPlayer
-      if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-         local sound = Instance.new("Sound", p.Character.HumanoidRootPart)
-         sound.SoundId = "rbxassetid://9069609268"
-         sound:Play()
-         
-         local sparkle = Instance.new("Sparkles", p.Character.HumanoidRootPart)
-         sparkle.SparkleColor = Color3.fromRGB(255, 215, 0)
-         task.wait(4)
-         sparkle:Destroy()
-         sound:Destroy()
+local autoColorEnabled = false
+TabHome:Toggle({
+   Title = "تفعيل التلوين المتغير تلقائياً (RGB)",
+   Value = false,
+   Callback = function(state)
+      autoColorEnabled = state
+      if autoColorEnabled then
+         WindUI:Notify({ Title = "Color Picker", Content = "تم تشغيل محاكاة لوحة الألوان بنجاح!", Duration = 3 })
+         task.spawn(function()
+            local hue = 0
+            while autoColorEnabled do
+               hue = hue + 0.05
+               if hue > 1 then hue = 0 end
+               local color = Color3.fromHSV(hue, 1, 1)
+               pcall(function()
+                  game:GetService("ReplicatedStorage").UpdateColor:FireServer(color)
+                  local hexColor = string.format("#%02X%02X%02X", color.R*255, color.G*255, color.B*255)
+                  game:GetService("ReplicatedStorage").UpdateName:FireServer("<font color='"..hexColor.."'>حسين</font>")
+                  game:GetService("ReplicatedStorage").UpdateBio:FireServer("<font color='"..hexColor.."'>Hussein Hub V1</font>")
+               end)
+               task.wait(0.3)
+            end
+         end)
       end
    end
 })
 
--- [تعديل] حذف الفواصل الزائدة التي كانت تعطل السكربت هنا
-TabAR:Section({ Title = "انتقالات الأماكن والمحلات" })
+----------------------------------------------------
+-- [2] قسم اختراق الجدران والمضادات (الجلد والحماية)
+----------------------------------------------------
+local TabExploits = Window:Tab({ Title = "الحماية والاختراق", Icon = "rbxassetid://4483362458" })
 
-TabAR:Button({
-   Title = "Go to supermarket (انتقال الى سوبر ماركت)",
-   Callback = function()
-      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-      if root then root.CFrame = CFrame.new(-22.5, 14.2, -145.8) end
+TabExploits:Section({ Title = "🔓 ميزة اختراق الجدران" })
+
+local noclipEnabled = false
+local noclipConnection
+TabExploits:Toggle({
+   Title = "تفعيل اختراق الجدران المستمر (NoClip)",
+   Value = false,
+   Callback = function(state)
+      noclipEnabled = state
+      if noclipEnabled then
+         WindUI:Notify({ Title = "NoClip", Content = "تم تفعيل اختراق الجدران بنجاح!", Duration = 3 })
+         noclipConnection = game:GetService("RunService").Stepped:Connect(function()
+            if noclipEnabled and game.Players.LocalPlayer.Character then
+               for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                  if part:IsA("BasePart") then part.CanCollide = false end
+               end
+            end
+         end)
+      else
+         if noclipConnection then noclipConnection:Disconnect() end
+         WindUI:Notify({ Title = "NoClip", Content = "تم إيقاف اختراق الجدران.", Duration = 3 })
+      end
    end
 })
 
-TabAR:Button({
-   Title = "Go Underground (تحت الأرض / المكان السري)",
-   Callback = function()
-      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-      if root then root.CFrame = CFrame.new(-75.1, -40.3, 155.5) end
+TabExploits:Section({ Title = "🛡️ مضادات الطيران والكنب والسفن" })
+
+local antiFlingEnabled = false
+TabExploits:Toggle({
+   Title = "مضاد الطيران والفلنق (سفينة، كنبة، أغراض طائرة)",
+   Value = false,
+   Callback = function(state)
+      antiFlingEnabled = state
+      if antiFlingEnabled then
+         WindUI:Notify({ Title = "Anti-Fling", Content = "حماية الطيران الإجباري تعمل الآن!", Duration = 3 })
+         task.spawn(function()
+            while antiFlingEnabled do
+               local char = game.Players.LocalPlayer.Character
+               local hrp = char and char:FindFirstChild("HumanoidRootPart")
+               local hum = char and char:FindFirstChildOfClass("Humanoid")
+               
+               if hrp and hum then
+                  if hrp.Velocity.Magnitude > 70 or hrp.RotVelocity.Magnitude > 70 then
+                     hrp.Velocity = Vector3.new(0, 0, 0)
+                     hrp.RotVelocity = Vector3.new(0, 0, 0)
+                  end
+                  if hum.SeatPart then
+                     hum.Sit = false
+                     hrp.CFrame = hrp.CFrame + Vector3.new(0, 3, 0)
+                  end
+               end
+               task.wait(0.1)
+            end
+         end)
+      end
    end
 })
 
-TabAR:Section({ Title = "تعديلات اللاعب" })
-TabAR:Button({
-   Title = "Super WalkSpeed (سرعة خارقة)",
+local antiStuckEnabled = false
+TabExploits:Toggle({
+   Title = "مضاد اللصق والتعليق في الأرض (Anti-Anchor)",
+   Value = false,
+   Callback = function(state)
+      antiStuckEnabled = state
+      if antiStuckEnabled then
+         task.spawn(function()
+            while antiStuckEnabled do
+               local char = game.Players.LocalPlayer.Character
+               if char then
+                  for _, part in pairs(char:GetChildren()) do
+                     if part:IsA("BasePart") and part.Anchored then part.Anchored = false end
+                  end
+               end
+               task.wait(0.2)
+            end
+         end)
+      end
+   end
+})
+
+----------------------------------------------------
+-- [3] قسم السيارات الجديد والكامل 🏎️
+----------------------------------------------------
+local TabVehicles = Window:Tab({ Title = "قسم السيارات", Icon = "rbxassetid://4483362458" })
+
+TabVehicles:Section({ Title = "🚗 رسبون وتحكم بالمركبات" })
+
+-- قائمة بأشهر سيارات بروك هافن
+local carList = {"Tesla", "Ferrari", "Mustang", "Jeep", "Supra", "Lamborghini", "Ambulance", "Police Car"}
+local selectedCar = "Tesla"
+
+TabVehicles:Dropdown({
+   Title = "اختر السيارة المراد رسبنتها",
+   Values = carList,
+   Callback = function(value) selectedCar = value end
+})
+
+TabVehicles:Button({
+   Title = "🏎️ رسبون السيارة المختارة فوراً",
+   Callback = function()
+      pcall(function()
+         -- ريموت رسبون السيارات الرسمي في بروك هافن
+         game:GetService("ReplicatedStorage").SpawnVehicle:FireServer(selectedCar)
+         WindUI:Notify({ Title = "Car Spawned", Content = "تم رسبنة سيارتك بنجاح! اركبها لتعديل السرعة.", Duration = 3 })
+      end)
+   end
+})
+
+TabVehicles:Section({ Title = "⚡ هكر السرعة الخارقة للسيارات" })
+
+TabVehicles:Button({
+   Title = "🚀 جعل سرعة سيارتك الحالية 200 (تعديل العزم الحقيقي)",
+   Callback = function()
+      local char = game.Players.LocalPlayer.Character
+      local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+      if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
+         local seat = humanoid.SeatPart
+         seat.MaxSpeed = 200
+         seat.Torque = 30000 -- عزم جبار عشان ما تقطع السيارة بالتفحيط
+         seat.TurnSpeed = 25 -- تحسين لفة السيارة على السرعات العالية
+         WindUI:Notify({ Title = "Speed Hack Active", Content = "تم تعديل المحرك! سرعتك الآن 200 حصان حقيقي!", Duration = 4 })
+      else
+         WindUI:Notify({ Title = "تنبيه!", Content = "يجب أن تكون راكباً داخل مقعد السائق أولاً!", Duration = 4 })
+      end
+   end
+})
+
+TabVehicles:Button({
+   Title = "🛑 تدمير وحذف سيارتك الحالية",
+   Callback = function()
+      pcall(function()
+         game:GetService("ReplicatedStorage").RemoveVehicle:FireServer()
+         WindUI:Notify({ Title = "Car Removed", Content = "تم حذف السيارة من الماب.", Duration = 2 })
+      end)
+   end
+})
+
+----------------------------------------------------
+-- [4] قسم تعديلات اللاعب ومراقبة السيرفر
+----------------------------------------------------
+local TabPlayer = Window:Tab({ Title = "اللاعب والمراقبة", Icon = "rbxassetid://4483362458" })
+
+TabPlayer:Section({ Title = "👟 تعديلات السرعة شورت" })
+TabPlayer:Button({
+   Title = "Super WalkSpeed (سرعة شخصية خارقة)",
    Callback = function()
       if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
          game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 120
@@ -85,69 +213,9 @@ TabAR:Button({
    end
 })
 
-TabAR:Button({
-   Title = "Fly to Sky (طيران للسماء)",
-   Callback = function()
-      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-      if root then
-         local bv = Instance.new("BodyVelocity")
-         bv.Velocity = Vector3.new(0, 150, 0)
-         bv.MaxForce = Vector3.new(0, 100000, 0)
-         bv.Parent = root
-         task.wait(2.5)
-         bv:Destroy()
-      end
-   end
-})
-
-TabAR:Section({ Title = "تعديلات وتعديل سرعة السيارات" })
-TabAR:Button({
-   Title = "⚡ جعل سرعة سيارتك الحالية 200 (حقيقي)",
-   Callback = function()
-      local char = game.Players.LocalPlayer.Character
-      local humanoid = char and char:FindFirstChildOfClass("Humanoid")
-      if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
-         local seat = humanoid.SeatPart
-         seat.MaxSpeed = 200
-         seat.Torque = 15000
-         if seat:FindFirstChild("VehicleEngine") then
-            seat.VehicleEngine.MaxSpeed = 200
-         end
-         WindUI:Notify({ Title = "Speed Set!", Content = "تم تعديل سرعة السيارة الحالية إلى 200 حقيقية!", Duration = 3 })
-      else
-         WindUI:Notify({ Title = "تنبيه!", Content = "يجب أن تكون راكباً داخل مقعد السائق في السيارة أولاً!", Duration = 4 })
-      end
-   end
-})
-
-TabAR:Button({
-   Title = "Hijack Closest Car (ركوب وسرقة أقرب سيارة فارغة)",
-   Callback = function()
-      local char = game.Players.LocalPlayer.Character
-      if char and char:FindFirstChild("HumanoidRootPart") then
-         local targetSeat = nil
-         local distance = math.huge
-         for _, obj in pairs(workspace:GetDescendants()) do
-            if obj:IsA("VehicleSeat") and obj.Occupant == nil then
-               local d = (obj.Position - char.HumanoidRootPart.Position).Magnitude
-               if d < distance then 
-                  distance = d
-                  targetSeat = obj 
-               end
-            end
-         end
-         if targetSeat then
-            char.HumanoidRootPart.CFrame = targetSeat.CFrame + Vector3.new(0, 2, 0)
-            task.wait(0.2)
-            targetSeat:Sit(char:FindFirstChildOfClass("Humanoid"))
-         end
-      end
-   end
-})
-
-TabAR:Section({ Title = "أدوات مراقبة السيرفر" })
-local DropdownAR = TabAR:Dropdown({
-   Title = "اختر لاعب لمراقبته",
+TabPlayer:Section({ Title = "👁️ مراقبة السيرفر واللاعبين" })
+local DropdownAR = TabPlayer:Dropdown({
+   Title = "اختر لاعب لمراقبته عن بعد",
    Values = getPlayerNames(),
    Callback = function(Option)
       if Option and Option ~= "" then
@@ -159,152 +227,45 @@ local DropdownAR = TabAR:Dropdown({
    end
 })
 
-TabAR:Button({
-   Title = "تحديث قائمة اللاعبين",
-   Callback = function()
-      DropdownAR:Refresh(getPlayerNames())
-   end
-})
-
-TabAR:Button({
-   Title = "إلغاء المراقبة والعودة لشخصيتك",
-   Callback = function()
-      workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-   end
-})
-
+TabPlayer:Button({ Title = "🔄 تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames()) end })
+TabPlayer:Button({ Title = "❌ إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
 
 ----------------------------------------------------
--- [2] إنشاء الأقسام باللغة الإنجليزية
+-- [5] قسم نظام التذكير الذكي
 ----------------------------------------------------
-local TabEN = Window:Tab({ Title = "Main (EN)", Icon = "rbxassetid://4483362458" })
+local TabReminder = Window:Tab({ Title = "نظام ذكرني", Icon = "rbxassetid://4483362458" })
 
-TabEN:Section({ Title = "Main Menu" })
-TabEN:Paragraph({ Title = "Hussein Hub V1", Desc = "Welcome to Brookhaven RP Premium Script (2026)" })
+local reminderText = "حان الوقت!"
+local reminderTime = 10
 
-TabEN:Section({ Title = "Special Options" })
-TabEN:Button({
-   Title = "👑 Free Premium Pass Unlock",
-   Callback = function()
-      WindUI:Notify({
-         Title = "Premium Unlocked! 👑",
-         Content = "Brookhaven Premium active for current server session.",
-         Duration = 5
-      })
-      local p = game.Players.LocalPlayer
-      if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-         local sound = Instance.new("Sound", p.Character.HumanoidRootPart)
-         sound.SoundId = "rbxassetid://9069609268"
-         sound:Play()
-         
-         local sparkle = Instance.new("Sparkles", p.Character.HumanoidRootPart)
-         sparkle.SparkleColor = Color3.fromRGB(255, 215, 0)
-         task.wait(4)
-         sparkle:Destroy()
-         sound:Destroy()
-      end
-   end
+TabReminder:Input({
+   Title = "اكتب الشيء الذي تريد تذكره",
+   Placeholder = "مثال: سرقة البنك، ركوب السيارة...",
+   Callback = function(text) reminderText = text end
 })
 
-TabEN:Section({ Title = "Teleports" })
-TabEN:Button({
-   Title = "Go to supermarket",
-   Callback = function()
-      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-      if root then root.CFrame = CFrame.new(-22.5, 14.2, -145.8) end
-   end
+TabReminder:Input({
+   Title = "الوقت قبل التذكير (بالثواني)",
+   Placeholder = "10",
+   Callback = function(num) reminderTime = tonumber(num) or 10 end
 })
 
-TabEN:Button({
-   Title = "Go Underground (Secret Agency)",
+TabReminder:Button({
+   Title = "🔔 ابدأ مؤقت التذكير",
    Callback = function()
-      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-      if root then root.CFrame = CFrame.new(-75.1, -40.3, 155.5) end
-   end
-})
-
-TabEN:Section({ Title = "Player Tweaks" })
-TabEN:Button({
-   Title = "Super WalkSpeed",
-   Callback = function()
-      if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 120
-      end
-   end
-})
-
-TabEN:Button({
-   Title = "Fly to Sky",
-   Callback = function()
-      local root = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-      if root then
-         local bv = Instance.new("BodyVelocity")
-         bv.Velocity = Vector3.new(0, 150, 0)
-         bv.MaxForce = Vector3.new(0, 100000, 0)
-         bv.Parent = root
-         task.wait(2.5)
-         bv:Destroy()
-      end
-   end
-})
-
-TabEN:Section({ Title = "Vehicles Tweaks" })
-TabEN:Button({
-   Title = "⚡ Set Current Vehicle Speed to 200",
-   Callback = function()
-      local char = game.Players.LocalPlayer.Character
-      local humanoid = char and char:FindFirstChildOfClass("Humanoid")
-      if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
-         local seat = humanoid.SeatPart
-         seat.MaxSpeed = 200
-         seat.Torque = 15000
-         if seat:FindFirstChild("VehicleEngine") then
-            seat.VehicleEngine.MaxSpeed = 200
+      WindUI:Notify({ Title = "تم ضبط التذكير!", Content = "سأقوم بتذكيرك بعد " .. tostring(reminderTime) .. " ثانية.", Duration = 4 })
+      task.spawn(function()
+         task.wait(reminderTime)
+         WindUI:Notify({ Title = "🚨 تذكير هام من حسين! 🚨", Content = reminderText, Duration = 10 })
+         local p = game.Players.LocalPlayer
+         if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+            local sound = Instance.new("Sound", p.Character.HumanoidRootPart)
+            sound.SoundId = "rbxassetid://9114223173"
+            sound.Volume = 2
+            sound:Play()
+            task.wait(3)
+            sound:Destroy()
          end
-         WindUI:Notify({ Title = "Speed Set!", Content = "Vehicle speed set to 200!", Duration = 3 })
-      else
-         WindUI:Notify({ Title = "Warning!", Content = "You must be driving a vehicle first!", Duration = 4 })
-      end
+      end)
    end
 })
-
-TabEN:Button({
-   Title = "Hijack Closest Car",
-   Callback = function()
-      local char = game.Players.LocalPlayer.Character
-      if char and char:FindFirstChild("HumanoidRootPart") then
-         local targetSeat = nil
-         local distance = math.huge
-         for _, obj in pairs(workspace:GetDescendants()) do
-            if obj:IsA("VehicleSeat") and obj.Occupant == nil then
-               local d = (obj.Position - char.HumanoidRootPart.Position).Magnitude
-               if d < distance then 
-                  distance = d
-                  targetSeat = obj 
-               end
-            end
-         end
-         if targetSeat then
-            char.HumanoidRootPart.CFrame = targetSeat.CFrame + Vector3.new(0, 2, 0)
-            task.wait(0.2)
-            targetSeat:Sit(char:FindFirstChildOfClass("Humanoid"))
-         end
-      end
-   end
-})
-
-local DropdownEN = TabEN:Dropdown({
-   Title = "Choose Player to Spectate",
-   Values = getPlayerNames(),
-   Callback = function(Option)
-      if Option and Option ~= "" then
-         local target = game.Players:FindFirstChild(Option)
-         if target and target.Character and target.Character:FindFirstChildOfClass("Humanoid") then
-            workspace.CurrentCamera.CameraSubject = target.Character:FindFirstChildOfClass("Humanoid")
-         end
-      end
-   end
-})
-
-TabEN:Button({ Title = "Refresh Players List", Callback = function() DropdownEN:Refresh(getPlayerNames()) end })
-TabEN:Button({ Title = "Stop Spectating", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
