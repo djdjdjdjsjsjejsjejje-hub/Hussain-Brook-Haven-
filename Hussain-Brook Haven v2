@@ -50,36 +50,48 @@ local function getIraqDate()
 end
 
 ----------------------------------------------------
--- [1] قسم الرئيسية والأسماء الملونة (V2)
 ----------------------------------------------------
-local TabHome = Window:Tab({ Title = "الرئيسية (RGB)", Icon = "rbxassetid://4483362458" })
+-- [6] قسم حقوق المطور (حسين) 👑
+----------------------------------------------------
+local TabCredits = Window:Tab({ Title = "حقوق المطور", Icon = "rbxassetid://4483362458" })
 
-TabHome:Section({ Title = "🌈 تلوين تلقائي (محاكاة لوحة الألوان)" })
+TabCredits:Section({ Title = "📱 حسابات المطور الرسمية" })
 
-local autoColorEnabled = false
-TabHome:Toggle({
-   Title = "تفعيل التلوين المتغير تلقائياً (RGB)",
-   Value = false,
-   Callback = function(state)
-      autoColorEnabled = state
-      if autoColorEnabled then
-         WindUI:Notify({ Title = "Hussein Hub V2", Content = "تم تشغيل محاكاة لوحة الألوان بنجاح!", Duration = 3 })
-         task.spawn(function()
-            local hue = 0
-            while autoColorEnabled do
-               hue = hue + 0.05
-               if hue > 1 then hue = 0 end
-               local color = Color3.fromHSV(hue, 1, 1)
-               pcall(function()
-                  game:GetService("ReplicatedStorage").UpdateColor:FireServer(color)
-                  local hexColor = string.format("#%02X%02X%02X", color.R*255, color.G*255, color.B*255)
-                  game:GetService("ReplicatedStorage").UpdateName:FireServer("<font color='"..hexColor.."'>حسين</font>")
-                  game:GetService("ReplicatedStorage").UpdateBio:FireServer("<font color='"..hexColor.."'>Hussein Hub V2</font>")
-               end)
-               task.wait(0.3)
-            end
-         end)
-      end
+TabCredits:Button({
+   Title = "👤 تيك توك: hussain_90_1",
+   Callback = function()
+      -- نسخ الحساب تلقائياً لجهاز اللاعب
+      setclipboard("hussain_90_1")
+      WindUI:Notify({ 
+         Title = "تم النسخ!", 
+         Content = "تم نسخ يوزر التيك توك بنجاح، يمكنك الآن البحث عنه ومتابعته.", 
+         Duration = 4 
+      })
+   end
+})
+
+TabCredits:Button({
+   Title = "🎮 روبلوكس: Hussain4646767",
+   Callback = function()
+      -- نسخ الحساب تلقائياً لجهاز اللاعب
+      setclipboard("Hussain4646767")
+      WindUI:Notify({ 
+         Title = "تم النسخ!", 
+         Content = "تم نسخ يوزر الروبلوكس بنجاح، أرسل لي طلب صداقة!", 
+         Duration = 4 
+      })
+   end
+})
+
+TabCredits:Section({ Title = "📝 إصدار السكربت الحصري" })
+TabCredits:Button({
+   Title = "Hussein Hub V2 - 2026 WindUI Edition",
+   Callback = function()
+      WindUI:Notify({ 
+         Title = "شكر خاص", 
+         Content = "شكراً لاستخدامك سكربت حسين المطور V2 لـ بروك هافن.", 
+         Duration = 5 
+      })
    end
 })
 
@@ -213,16 +225,6 @@ TabVehicles:Button({
    end
 })
 
-TabVehicles:Button({
-   Title = "🛑 تدمير وحذف سيارتك الحالية",
-   Callback = function()
-      pcall(function()
-         game:GetService("ReplicatedStorage").RemoveVehicle:FireServer()
-         WindUI:Notify({ Title = "Car Removed", Content = "تم حذف السيارة من الماب.", Duration = 2 })
-      end)
-   end
-})
-
 ----------------------------------------------------
 -- [4] قسم تعديلات اللاعب ومراقبة السيرفر (V2)
 ----------------------------------------------------
@@ -233,7 +235,7 @@ TabPlayer:Button({
    Title = "Super WalkSpeed (سرعة شخصية خارقة)",
    Callback = function()
       if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 120
+         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 300
       end
    end
 })
