@@ -1,8 +1,19 @@
 -- Hussein Hub V2 (2026 WindUI Edition)
--- The Ultimate Edition: Optimized Exploits, Anti-Flings & Vehicles Unlocked!
--- تحديث مخصص: قسم نحن نحترم محرم 
+-- التحديث الأخير: إضافة عبارات حسينية متعددة ومحسنة لقسم "نحن نحترم محرم"
 
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local success, WindUI = pcall(function()
+   return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/Source.lua"))()
+end)
+
+if not success or not WindUI then
+   pcall(function()
+      WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+   end)
+end
+
+if not WindUI then
+   return warn("Hussein Hub V2: تعذر تحميل مكتبة الواجهة.")
+end
 
 local Window = WindUI:CreateWindow({
    Title = "Hussein Hub V2",
@@ -12,29 +23,15 @@ local Window = WindUI:CreateWindow({
    Transparent = true
 })
 
--- الخدمات الأساسية لضمان سرعة الأداء
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 
--- وظيفة جلب أسماء اللاعبين بشكل منظم وسريع
-local function getPlayerNames()
-   local names = {}
-   for _, p in ipairs(Players:GetPlayers()) do
-      if p ~= LocalPlayer then 
-         table.insert(names, p.Name) 
-      end
-   end
-   return names
-end
-
--- وظيفة جلب الوقت الحالي بتوقيت العراق (نظام 12 ساعة دقيق)
 local function getIraqTime()
    local localTime = os.date("*t")
    local hour = localTime.hour
    local period = "AM"
-   
    if hour >= 12 then
       period = "مساءً"
       if hour > 12 then hour = hour - 12 end
@@ -42,108 +39,144 @@ local function getIraqTime()
       period = "صباحاً"
       if hour == 0 then hour = 12 end
    end
-   
    return string.format("%02d:%02d:%02d %s", hour, localTime.min, localTime.sec, period)
 end
 
--- وظيفة جلب التاريخ
 local function getIraqDate()
    return os.date("%Y/%m/%d")
 end
 
-----------------------------------------------------
--- [1] قسم الحماية والتحركات المتقدمة
-----------------------------------------------------
-local TabExploits = Window:Tab({ Title = "الحماية والاختراق", Icon = "rbxassetid://4483362458" })
+-- قائمة العبارات الحسينية المضافة حديثاً ليتم الاختيار منها بشكل عشوائي أو متتالي
+local muharramPhrases = {
+   "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.",
+   "السلام عليك يا أبا عبد الله وعلى الأرواح التي حلت بفنائك.",
+   "ويبقى الحسين مناراً للأحرار في كل زمان ومكان.",
+   "كل يوم عاشوراء وكل أرض كربلاء.. لبّيك يا حسين.",
+   "أبد والله يا زهراء ما ننسى حسيناه."
+}
+local phraseIndex = 1
 
-TabExploits:Section({ Title = " ميزة اختراق الجدران" })
+----------------------------------------------------
+-- [1] قسم تحديث الشرطة الجديد و S.W.A.T
+----------------------------------------------------
+local TabPolice = Window:Tab({ Title = "تحديث الشرطة الجديد", Icon = "rbxassetid://4483362458" })
 
-local noclipEnabled = false
-local noclipConnection
-TabExploits:Toggle({
-   Title = "تفعيل اختراق الجدران المستمر (NoClip)",
-   Value = false,
-   Callback = function(state)
-      noclipEnabled = state
-      if noclipEnabled then
-         WindUI:Notify({ Title = "NoClip V2", Content = "تم تفعيل اختراق الجدران بنجاح!", Duration = 3 })
-         noclipConnection = RunService.Stepped:Connect(function()
-            if noclipEnabled and LocalPlayer.Character then
-               for _, part in ipairs(LocalPlayer.Character:GetChildren()) do
-                  if part:IsA("BasePart") then part.CanCollide = false end
-               end
+TabPolice:Section({ Title = "الانتقال السريع للمواقع المحدثة" })
+TabPolice:Button({
+   Title = "الذهاب إلى مركز الشرطة الجديد وغرفة S.W.A.T",
+   Callback = function()
+      local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+      if hrp then
+         hrp.CFrame = CFrame.new(-165, 15, -30)
+         WindUI:Notify({ Title = "Hussein Hub", Content = "تم الانتقال إلى مركز الشرطة بنجاح!", Duration = 3 })
+      end
+   end
+})
+
+TabPolice:Section({ Title = "أدوات ومعدات الشرطة المتقدمة" })
+TabPolice:Button({
+   Title = "جلب أدوات ومعدات مكافحة الشغب (Shield & Tools)",
+   Callback = function()
+      pcall(function()
+         local tools = {"RiotShield", "SwatShield", "Taser", "Baton", "Handcuffs", "Radio"}
+         for _, toolName in ipairs(tools) do
+            ReplicatedStorage.GiveItem:FireServer(toolName)
+         end
+      end)
+      WindUI:Notify({ Title = "معدات متطورة", Content = "تم إرسال أمر جلب الدروع والأدوات بنجاح!", Duration = 3 })
+   end
+})
+
+----------------------------------------------------
+-- [2] قسم المنازل والمخابئ السرية 2026
+----------------------------------------------------
+local TabSecrets = Window:Tab({ Title = "المنازل والمخابئ 2026", Icon = "rbxassetid://4483362458" })
+
+TabSecrets:Section({ Title = "مجموعة منازل Wolf Den والحفلات" })
+TabSecrets:Button({
+   Title = "تفعيل ميزة طابع الحفلات والتحكم بالمنزل",
+   Callback = function()
+      pcall(function()
+         ReplicatedStorage.HousePartyRemote:FireServer("TriggerParty", "PremiumStyle")
+      end)
+      WindUI:Notify({ Title = "House Parties", Content = "تم إطلاق طابع الحفلات الخاص بك!", Duration = 3 })
+   end
+})
+
+TabSecrets:Section({ Title = "كشف واختراق المخابئ والخزائن" })
+TabSecrets:Button({
+   Title = "اختراق جدار مرآة منزل الشرطة والوصول للخزنة",
+   Callback = function()
+      local char = LocalPlayer.Character
+      if char then
+         for i = 1, 30 do
+            for _, part in ipairs(char:GetChildren()) do
+               if part:IsA("BasePart") then part.CanCollide = false end
             end
-         end)
+            task.wait(0.05)
+         end
+      end
+      WindUI:Notify({ Title = "خزنة الشرطة", Content = "تم تعطيل الجدران مؤقتاً لتخطي جدار المرآة السري!", Duration = 4 })
+   end
+})
+
+TabSecrets:Button({
+   Title = "ثغرة السرير (Glitch) لدخول الغرف السرية العلوية",
+   Callback = function()
+      pcall(function()
+         local character = LocalPlayer.Character
+         local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+         if humanoid then
+            humanid.Sit = true
+            task.wait(0.1)
+            if character:FindFirstChild("HumanoidRootPart") then
+               character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + Vector3.new(0, 6, 0)
+            end
+         end
+      end)
+      WindUI:Notify({ Title = "ثغرة السرير", Content = "تم تفعيل الرفع التلقائي لاختراق الأسقف السرية!", Duration = 4 })
+   end
+})
+
+----------------------------------------------------
+-- [3] قسم إضافات عامة (المنطاد والمدرسة)
+----------------------------------------------------
+local TabUpdates = Window:Tab({ Title = "إضافات مهمة مؤخراً", Icon = "rbxassetid://4483362458" })
+
+TabUpdates:Section({ Title = "تحديث روح المدرسة (School Spirit)" })
+TabUpdates:Button({
+   Title = "تفعيل ملابس وحركات المدرسة التعبيرية الجديدة",
+   Callback = function()
+      pcall(function()
+         ReplicatedStorage.PlayEmote:FireServer("SchoolSpirit_Dance")
+      end)
+      WindUI:Notify({ Title = "School Spirit", Content = "تم تفعيل الرقصات والحركات بنجاح!", Duration = 3 })
+   end
+})
+
+TabUpdates:Section({ Title = "المنطاد الطائر (Blimp Hack)" })
+TabUpdates:Button({
+   Title = "زيادة وتخصيص سرعة المنطاد الطائر إلى القصوى",
+   Callback = function()
+      local vehicle = workspace:FindFirstChild("Blimp") or workspace:FindFirstChild(LocalPlayer.Name .. "sBlimp")
+      if vehicle then
+         local seat = vehicle:FindFirstChildOfClass("VehicleSeat")
+         if seat then
+            seat.MaxSpeed = 150
+            WindUI:Notify({ Title = "Blimp Speed", Content = "تمت ترقية السرعة بنجاح!", Duration = 3 })
+         end
       else
-         if noclipConnection then noclipConnection:Disconnect() end
-         WindUI:Notify({ Title = "NoClip V2", Content = "تم إيقاف اختراق الجدران.", Duration = 3 })
-      end
-   end
-})
-
-TabExploits:Section({ Title = "مضادات الطيران والتهنيج" })
-
-local antiFlingEnabled = false
-TabExploits:Toggle({
-   Title = "مضاد الطيران والفلنق الحركي",
-   Value = false,
-   Callback = function(state)
-      antiFlingEnabled = state
-      if antiFlingEnabled then
-         WindUI:Notify({ Title = "Anti-Fling", Content = "حماية الطيران الإجباري تعمل الآن بكفاءة!", Duration = 3 })
-         task.spawn(function()
-            while antiFlingEnabled do
-               local char = LocalPlayer.Character
-               local hrp = char and char:FindFirstChild("HumanoidRootPart")
-               local hum = char and char:FindFirstChildOfClass("Humanoid")
-               
-               if hrp and hum then
-                  -- تصفير العزم العشوائي الناتج عن الفلنق أو الكنب الطائر لمنع قذف اللاعب
-                  if hrp.Velocity.Magnitude > 70 or hrp.RotVelocity.Magnitude > 70 then
-                     hrp.Velocity = Vector3.zero
-                     hrp.RotVelocity = Vector3.zero
-                  end
-                  if hum.SeatPart then
-                     hum.Sit = false
-                     hrp.CFrame = hrp.CFrame + Vector3.new(0, 3, 0)
-                  end
-               end
-               task.wait(0.1)
-            end
-         end)
-      end
-   end
-})
-
-local antiStuckEnabled = false
-TabExploits:Toggle({
-   Title = "مضاد اللصق والتعليق (Anti-Anchor)",
-   Value = false,
-   Callback = function(state)
-      antiStuckEnabled = state
-      if antiStuckEnabled then
-         task.spawn(function()
-            while antiStuckEnabled do
-               local char = LocalPlayer.Character
-               if char then
-                  for _, part in ipairs(char:GetChildren()) do
-                     if part:IsA("BasePart") and part.Anchored then part.Anchored = false end
-                  end
-               end
-               task.wait(0.2)
-            end
-         end)
+         WindUI:Notify({ Title = "تنبيه!", Content = "يرجى ركوب أو رسبنة المنطاد أولاً لتعديل خصائصه!", Duration = 3 })
       end
    end
 })
 
 ----------------------------------------------------
--- [2] قسم السيارات المحسن
+-- [4] قسم السيارات المحسن
 ----------------------------------------------------
 local TabVehicles = Window:Tab({ Title = "قسم السيارات", Icon = "rbxassetid://4483362458" })
 
 TabVehicles:Section({ Title = "سرقة واختطاف المركبات" })
-
 TabVehicles:Button({
    Title = " سرقة أقرب سيارة فارغة في الماب وركوبها فوراً",
    Callback = function()
@@ -151,10 +184,7 @@ TabVehicles:Button({
       local hrp = character and character:FindFirstChild("HumanoidRootPart")
       local humanoid = character and character:FindFirstChildOfClass("Humanoid")
       
-      if not hrp or not humanoid then
-         WindUI:Notify({ Title = "تنبيه!", Content = "الشخصية لم يتم تحميلها بالكامل بعد!", Duration = 3 })
-         return
-      end
+      if not hrp or not humanoid then return end
       
       local closestSeat = nil
       local shortestDistance = math.huge
@@ -173,15 +203,12 @@ TabVehicles:Button({
          hrp.CFrame = closestSeat.CFrame
          task.wait(0.1)
          closestSeat:Sit(humanoid)
-         WindUI:Notify({ Title = "Hussein Hub V2", Content = "تم الانتقال والجلوس في مقعد القيادة بنجاح!", Duration = 4 })
-      else
-         WindUI:Notify({ Title = "تنبيه!", Content = "لم يتم العثور على مركبة فارغة متاحة حالياً!", Duration = 4 })
+         WindUI:Notify({ Title = "Hussein Hub V2", Content = "تم ركوب مقعد قيادة السيارة بنجاح!", Duration = 3 })
       end
    end
 })
 
 TabVehicles:Section({ Title = " محرك السرعة المطورة" })
-
 TabVehicles:Button({
    Title = " جعل سرعة سيارتك الحالية 200 (تعديل العزم المباشر)",
    Callback = function()
@@ -190,140 +217,42 @@ TabVehicles:Button({
       if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
          local seat = humanoid.SeatPart
          seat.MaxSpeed = 200
-         seat.Torque = 30000 
+         seat.Torque = 35000 
          seat.TurnSpeed = 25 
-         WindUI:Notify({ Title = "Speed Hack Active", Content = "تمت ترقية أداء محرك السيارة بنجاح!", Duration = 4 })
-      else
-         WindUI:Notify({ Title = "تنبيه!", Content = "يجب أن تكون جالساً في مقعد السائق أولاً لتعديل العزم!", Duration = 4 })
+         WindUI:Notify({ Title = "Speed Hack Active", Content = "تمت ترقية أداء محرك السيارة بنجاح!", Duration = 3 })
       end
    end
 })
 
 ----------------------------------------------------
--- [3] قسم تعديلات اللاعب ومراقبة السيرفر
+-- [5] قسم الحماية والتحركات المتقدمة
 ----------------------------------------------------
-local TabPlayer = Window:Tab({ Title = "اللاعب والمراقبة", Icon = "rbxassetid://4483362458" })
+local TabExploits = Window:Tab({ Title = "الحماية والاختراق", Icon = "rbxassetid://4483362458" })
 
-TabPlayer:Section({ Title = " تعديلات السرعة الخارقة" })
-TabPlayer:Button({
-   Title = "Super WalkSpeed (سرعة حركة قصوى)",
-   Callback = function()
-      local char = LocalPlayer.Character
-      local hum = char and char:FindFirstChildOfClass("Humanoid")
-      if hum then hum.WalkSpeed = 300 end
-   end
-})
-
-TabPlayer:Section({ Title = "مراقبة السيرفر واللاعبين عن بعد" })
-local DropdownAR = TabPlayer:Dropdown({
-   Title = "اختر لاعب لمراقبته عن بعد",
-   Values = getPlayerNames(),
-   Callback = function(Option)
-      if Option and Option ~= "" then
-         local target = Players:FindFirstChild(Option)
-         local hum = target and target.Character and target.Character:FindFirstChildOfClass("Humanoid")
-         if hum then
-            workspace.CurrentCamera.CameraSubject = hum
-         end
-      end
-   end
-})
-
-TabPlayer:Button({ Title = " تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames()) end })
-TabPlayer:Button({ Title = " إلغاء المراقبة والعودة لشخصيتك", Callback = function() 
-   local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-   if hum then workspace.CurrentCamera.CameraSubject = hum end
-end })
-
-----------------------------------------------------
--- [4] قسم نسخ السكنات المطور (Avatar Copier)
-----------------------------------------------------
-local TabCopyOutfit = Window:Tab({ Title = "نسخ السكنات", Icon = "rbxassetid://4483362458" })
-
-TabCopyOutfit:Section({ Title = " قلد وانسخ مظهر اللاعبين" })
-
-local function copyPlayerOutfit(targetName)
-   local targetPlayer = Players:FindFirstChild(targetName)
-   
-   if targetPlayer and targetPlayer.Character and LocalPlayer.Character then
-      local localHumanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-      if localHumanoid then
-         local success, outfitDescription = pcall(function()
-            return Players:GetHumanoidDescriptionFromUserId(targetPlayer.UserId)
+TabExploits:Section({ Title = " ميزة اختراق الجدران" })
+local noclipEnabled = false
+local noclipConnection
+TabExploits:Toggle({
+   Title = "تفعيل اختراق الجدران المستمر (NoClip)",
+   Value = false,
+   Callback = function(state)
+      noclipEnabled = state
+      if noclipEnabled then
+         noclipConnection = RunService.Stepped:Connect(function()
+            if noclipEnabled and LocalPlayer.Character then
+               for _, part in ipairs(LocalPlayer.Character:GetChildren()) do
+                  if part:IsA("BasePart") then part.CanCollide = false end
+               end
+            end
          end)
-         
-         if success and outfitDescription then
-            localHumanoid:ApplyDescription(outfitDescription)
-            WindUI:Notify({ Title = "Hussein Hub V2", Content = "تم نسخ وتطبيق سكن اللاعب بنجاح!", Duration = 4 })
-         else
-            WindUI:Notify({ Title = "خطأ!", Content = "فشل جلب بيانات المظهر الخاصة باللاعب!", Duration = 3 })
-         end
-      end
-   else
-      WindUI:Notify({ Title = "تنبيه!", Content = "الهدف غير موجود أو أن شخصيتك لم تكتمل بعد!", Duration = 3 })
-   end
-end
-
-local DropdownOutfit = TabCopyOutfit:Dropdown({
-   Title = "اختر لاعب من السيرفر لنسخ مظهرة",
-   Values = getPlayerNames(),
-   Callback = function(Option)
-      if Option and Option ~= "" then copyPlayerOutfit(Option) end
-   end
-})
-
-TabCopyOutfit:Button({ Title = " تحديث قائمة السكنات", Callback = function() DropdownOutfit:Refresh(getPlayerNames()) end })
-
-TabCopyOutfit:Section({ Title = " نسخ السكن بالاسم اليدوي" })
-local targetInputName = ""
-TabCopyOutfit:Input({
-   Title = "اكتب اسم اللاعب الكامل (Username)",
-   Placeholder = "مثال: Hussain4646767",
-   Callback = function(text) targetInputName = text end
-})
-
-TabCopyOutfit:Button({
-   Title = " تطبيق المظهر المكتوب الآن",
-   Callback = function()
-      if targetInputName ~= "" then copyPlayerOutfit(targetInputName) else WindUI:Notify({ Title = "تنبيه!", Content = "يرجى إدخال اسم صحيح أولاً!", Duration = 3 }) end
-   end
-})
-
-----------------------------------------------------
--- [5] قسم الانتقال السريع (Teleport)
-----------------------------------------------------
-local TabTeleport = Window:Tab({ Title = "Annihilation & Teleport", Icon = "rbxassetid://4483362458" })
-
-local selectedTargetPlayer = ""
-local DropdownTP = TabTeleport:Dropdown({
-   Title = "اختر لاعب للانتقال إليه",
-   Values = getPlayerNames(),
-   Callback = function(Option) selectedTargetPlayer = Option end
-})
-
-TabTeleport:Button({ Title = " تحديث القائمة فوراً", Callback = function() DropdownTP:Refresh(getPlayerNames()) end })
-TabTeleport:Button({
-   Title = " انتقال إلى اللاعب المختار",
-   Callback = function()
-      if selectedTargetPlayer and selectedTargetPlayer ~= "" then
-         local target = Players:FindFirstChild(selectedTargetPlayer)
-         local targetHrp = target and target.Character and target.Character:FindFirstChild("HumanoidRootPart")
-         local localHrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-         
-         if targetHrp and localHrp then
-            localHrp.CFrame = targetHrp.CFrame + Vector3.new(0, 5, 0)
-            WindUI:Notify({ Title = "Hussein Hub V2", Content = "تم الانتقال الآمن بنجاح!", Duration = 4 })
-         else
-            WindUI:Notify({ Title = "خطأ!", Content = "تعذر العثور على إحداثيات اللاعب!", Duration = 3 })
-         end
       else
-         WindUI:Notify({ Title = "تنبيه!", Content = "الرجاء تحديد لاعب من القائمة أولاً!", Duration = 3 })
+         if noclipConnection then noclipConnection:Disconnect() end
       end
    end
 })
 
 ----------------------------------------------------
--- [6] قسم نحن نحترم محرم والتوقيت العراقي
+-- [6] قسم نحن نحترم محرم (تمت إضافة وإثراء العبارات)
 ----------------------------------------------------
 local TabMuharram = Window:Tab({ Title = "نحن نحترم محرم", Icon = "rbxassetid://4483362458" })
 
@@ -341,13 +270,19 @@ TabMuharram:Button({
 
 TabMuharram:Section({ Title = " عبارات الاحترام والتقدير" })
 TabMuharram:Button({
-   Title = "إظهار إشعار احترام الشهر الحرام",
+   Title = "إظهار عبارات احترام الشهر الحرام وتحديث اللقب المباشر",
    Callback = function()
+      -- اختيار عبارة من القائمة بالتناوب عند كل ضغطة زر
+      local chosenPhrase = muharramPhrases[phraseIndex]
+      phraseIndex = phraseIndex + 1
+      if phraseIndex > #muharramPhrases then phraseIndex = 1 end
+
       WindUI:Notify({ 
-         Title = "نحن نحترم محرم ", 
-         Content = "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.", 
+         Title = "نحن نحترم محرم", 
+         Content = chosenPhrase, 
          Duration = 7 
       })
+      
       pcall(function()
          ReplicatedStorage.UpdateName:FireServer("<font color='#FF0000'>يا حسين</font>")
          ReplicatedStorage.UpdateBio:FireServer("<font color='#000000'>نحن نحترم محرم - Hussein Hub V2</font>")
@@ -356,7 +291,7 @@ TabMuharram:Button({
 })
 
 ----------------------------------------------------
--- [7] قسم الحقوق (حسين)
+-- [7] قسم الحقوق (حسين - hussain_90_1)
 ----------------------------------------------------
 local TabCredits = Window:Tab({ Title = "حقوق المطور", Icon = "rbxassetid://4483362458" })
 
