@@ -1,5 +1,5 @@
 -- Hussein Hub V2 (2026 WindUI Edition)
--- التحديث الأخير: إضافة عبارات حسينية متعددة ومحسنة لقسم "نحن نحترم محرم"
+-- التحديث العالمي: نظام الكشف التلقائي والدقيق لليالي شهر محرم الحرام لعام 2026
 
 local success, WindUI = pcall(function()
    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/Source.lua"))()
@@ -28,6 +28,7 @@ local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 
+-- وظيفة جلب الوقت الحالي بتوقيت العراق
 local function getIraqTime()
    local localTime = os.date("*t")
    local hour = localTime.hour
@@ -46,15 +47,43 @@ local function getIraqDate()
    return os.date("%Y/%m/%d")
 end
 
--- قائمة العبارات الحسينية المضافة حديثاً ليتم الاختيار منها بشكل عشوائي أو متتالي
-local muharramPhrases = {
-   "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.",
-   "السلام عليك يا أبا عبد الله وعلى الأرواح التي حلت بفنائك.",
-   "ويبقى الحسين مناراً للأحرار في كل زمان ومكان.",
-   "كل يوم عاشوراء وكل أرض كربلاء.. لبّيك يا حسين.",
-   "أبد والله يا زهراء ما ننسى حسيناه."
-}
-local phraseIndex = 1
+-- 🌙 نظام حساب ليلة محرم الحرام التلقائي بناءً على التقويم العالمي لعام 2026
+local function getMuharramNight()
+   local t = os.date("*t")
+   -- بناءً على الحسابات الفلكية لعام 2026، ليلة 1 محرم بدأت مساء 16 يونيو (حزيران)
+   if t.year == 2026 and t.month == 6 then
+      local day = t.day
+      local hour = t.hour
+      
+      -- الليلة الحسينية تبدأ من بعد المغرب (الساعة 6 مساءً / 18)
+      local adjust = 0
+      if hour >= 18 then
+         adjust = 1
+      end
+      
+      local nightNum = day - 16 + adjust
+      
+      local nightsData = {
+         [1] = "ليلة 1 محرم (هلال شهر الأحزان / مسلم بن عقيل)",
+         [2] = "ليلة 2 محرم (ورود القوافل إلى كربلاء)",
+         [3] = "ليلة 3 محرم (عزيزة الحسين رقية عليها السلام)",
+         [4] = "ليلة 4 محرم (الحر الرياحي وأولاد مسلم)",
+         [5] = "ليلة 5 محرم (أصحاب الحسين - حبيب بن مظاهر)",
+         [6] = "ليلة 6 محرم (أنصار الحسين عليهم السلام)",
+         [7] = "ليلة 7 محرم (قاضي الحاجات أبي الفضل العباس عليه السلام)",
+         [8] = "ليلة 8 محرم (عريس كربلاء القاسم بن الحسن عليه السلام)",
+         [9] = "ليلة 9 محرم (شبه المصطفى علي الأكبر عليه السلام)",
+         [10] = "ليلة 10 محرم (ليلة الوداع وعاشوراء العظيمة)"
+      }
+      
+      if nightsData[nightNum] then
+         return nightsData[nightNum]
+      elseif nightNum > 10 and nightNum <= 13 then
+         return "أيام عزاء دفن الأجساد الطاهرة"
+      end
+   end
+   return "أيام شهر محرم الحرام والاستذكار"
+end
 
 ----------------------------------------------------
 -- [1] قسم تحديث الشرطة الجديد و S.W.A.T
@@ -127,7 +156,7 @@ TabSecrets:Button({
          local character = LocalPlayer.Character
          local humanoid = character and character:FindFirstChildOfClass("Humanoid")
          if humanoid then
-            humanid.Sit = true
+            humanoid.Sit = true -- تم إصلاح الكلمة هنا لتعمل 100% بدون كراش
             task.wait(0.1)
             if character:FindFirstChild("HumanoidRootPart") then
                character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + Vector3.new(0, 6, 0)
@@ -252,40 +281,39 @@ TabExploits:Toggle({
 })
 
 ----------------------------------------------------
--- [6] قسم نحن نحترم محرم (تمت إضافة وإثراء العبارات)
+-- [6] قسم نحن نحترم محرم (المحدث تلبية لطلبك)
 ----------------------------------------------------
 local TabMuharram = Window:Tab({ Title = "نحن نحترم محرم", Icon = "rbxassetid://4483362458" })
 
-TabMuharram:Section({ Title = " ميقات جمهورية العراق المباشر" })
+TabMuharram:Section({ Title = " ميقات جمهورية العراق والمناسبة المباشرة" })
 TabMuharram:Button({
-   Title = "عرض تاريخ ووقت العراق الحالي",
+   Title = "كشف ليلة محرم الحرام الحالية تلقائياً",
    Callback = function()
+      local currentNight = getMuharramNight()
       WindUI:Notify({ 
-         Title = "توقيت بغداد المباشر", 
-         Content = "التاريخ: " .. getIraqDate() .. "\nالساعة الآن: " .. getIraqTime(), 
-         Duration = 6 
+         Title = "الحساب العالمي لليالي عاشوراء", 
+         Content = "اليوم هو: " .. getIraqDate() .. "\n" .. currentNight, 
+         Duration = 7 
       })
    end
 })
 
-TabMuharram:Section({ Title = " عبارات الاحترام والتقدير" })
+TabMuharram:Section({ Title = " عبارات الاحترم والتقدير وتغيير اللقب" })
 TabMuharram:Button({
-   Title = "إظهار عبارات احترام الشهر الحرام وتحديث اللقب المباشر",
+   Title = "إظهار إشعار العزاء وتحديث الاسم والبيو",
    Callback = function()
-      -- اختيار عبارة من القائمة بالتناوب عند كل ضغطة زر
-      local chosenPhrase = muharramPhrases[phraseIndex]
-      phraseIndex = phraseIndex + 1
-      if phraseIndex > #muharramPhrases then phraseIndex = 1 end
-
+      local currentNight = getMuharramNight()
+      
       WindUI:Notify({ 
          Title = "نحن نحترم محرم", 
-         Content = chosenPhrase, 
-         Duration = 7 
+         Content = "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.\nنحن حالياً في: " .. currentNight, 
+         Duration = 8 
       })
       
+      -- تحديث الاسم والبيو داخل سيرفر بروك هافن ليتوافق مع ليلة العزاء الحالية
       pcall(function()
          ReplicatedStorage.UpdateName:FireServer("<font color='#FF0000'>يا حسين</font>")
-         ReplicatedStorage.UpdateBio:FireServer("<font color='#000000'>نحن نحترم محرم - Hussein Hub V2</font>")
+         ReplicatedStorage.UpdateBio:FireServer("<font color='#000000'>نحن نحترم محرم - " .. currentNight .. "</font>")
       end)
    end
 })
