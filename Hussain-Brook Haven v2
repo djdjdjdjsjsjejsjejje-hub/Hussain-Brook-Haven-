@@ -138,7 +138,7 @@ TabExploits:Toggle({
          task.spawn(function()
             while antiFlingEnabled do
                local char = game.Players.LocalPlayer.Character
-               local hrp = char and char:FindFirstChild("HumanoidRootPart")
+            طيرانcal hrp = char and char:FindFirstChild("HumanoidRootPart")
                local hum = char and char:FindFirstChildOfClass("Humanoid")
                
                if hrp and hum then
@@ -352,6 +352,59 @@ TabMuharram:Button({
          Content = "التاريخ: " .. currentDate .. "\nالساعة الآن: " .. currentTime, 
          Duration = 6 
       })
+   end
+})
+----------------------------------------------------
+-- [8] قسم الانتقال والطيران للاعبين (Teleport) 🚀
+----------------------------------------------------
+local TabTeleport = Window:Tab({ Title = "الانتقال للاعبين", Icon = "rbxassetid://4483362458" })
+
+TabTeleport:Section({ Title = "🚀 وانتقال سريع لأي لاعب" })
+
+local selectedTargetPlayer = ""
+
+-- قائمة منسدلة لاختيار اللاعب المستهدف
+local DropdownTP = TabTeleport:Dropdown({
+   Title = "اختر لاعب للانتقال إليه",
+   Values = getPlayerNames(),
+   Callback = function(Option)
+      selectedTargetPlayer = Option
+   end
+})
+
+-- زر لتحديث قائمة أسماء اللاعبين
+TabTeleport:Button({ 
+   Title = "🔄 تحديث قائمة اللاعبين للانتقال", 
+   Callback = function() 
+      DropdownTP:Refresh(getPlayerNames()) 
+   end 
+})
+
+-- زر تنفيذ الانتقال الفوري
+TabTeleport:Button({
+   Title = "⚡ وانتقال إلى اللاعب المختار فوراً",
+   Callback = function()
+      if selectedTargetPlayer and selectedTargetPlayer ~= "" then
+         local target = game.Players:FindFirstChild(selectedTargetPlayer)
+         local localPlayer = game.Players.LocalPlayer
+         
+         local targetHrp = target and target.Character and target.Character:FindFirstChild("HumanoidRootPart")
+         local localHrp = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+         
+         if targetHrp and localHrp then
+            -- الانتقال فوق رأس اللاعب المستهدف بقليل لتجنب الغليتشات
+            localHrp.CFrame = targetHrp.CFrame + Vector3.new(0, 5, 0)
+            WindUI:Notify({ 
+               Title = "Hussein Hub V2", 
+               Content = "تم الانتقال بنجاح إلى " .. selectedTargetPlayer, 
+               Duration = 4 
+            })
+         else
+            WindUI:Notify({ Title = "خطأ!", Content = "اللاعب غير موجود أو شخصيته لم تترسبن بعد!", Duration = 3 })
+         end
+      else
+         WindUI:Notify({ Title = "تنبيه!", Content = "الرجاء اختيار لاعب من القائمة أولاً!", Duration = 3 })
+      end
    end
 })
 
