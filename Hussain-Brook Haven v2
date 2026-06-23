@@ -256,6 +256,84 @@ local DropdownAR = TabPlayer:Dropdown({
 
 TabPlayer:Button({ Title = "🔄 تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames()) end })
 TabPlayer:Button({ Title = "❌ إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
+----------------------------------------------------
+-- [7] قسم نسخ السكنات (Avatar Copier) 🎭
+----------------------------------------------------
+local TabCopyOutfit = Window:Tab({ Title = "نسخ السكنات", Icon = "rbxassetid://4483362458" })
+
+TabCopyOutfit:Section({ Title = "🎭 قلد وانسخ سكنات اللاعبين" })
+
+-- وظيفة لتطبيق مظهر لاعب آخر على شخصيتك
+local function copyPlayerOutfit(targetName)
+   local targetPlayer = game.Players:FindFirstChild(targetName)
+   local localPlayer = game.Players.LocalPlayer
+   
+   if targetPlayer and targetPlayer.Character and localPlayer.Character then
+      local localHumanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
+      
+      if localHumanoid then
+         -- جلب وصف المظهر (Description) الخاص باللاعب المستهدف وتطبيقه
+         local pcallSuccess, outfitDescription = pcall(function()
+            return game.Players:GetHumanoidDescriptionFromUserId(targetPlayer.UserId)
+         end)
+         
+         if pcallSuccess and outfitDescription then
+            localHumanoid:ApplyDescription(outfitDescription)
+            WindUI:Notify({ 
+               Title = "Hussein Hub V2", 
+               Content = "تم نسخ سكن اللاعب " .. targetName .. " بنجاح!", 
+               Duration = 4 
+            })
+         else
+            WindUI:Notify({ Title = "خطأ!", Content = "فشل جلب بيانات مظهر اللاعب!", Duration = 3 })
+         end
+      end
+   else
+      WindUI:Notify({ Title = "تنبيه!", Content = "اللاعب غير موجود أو شخصيتك غير جاهزة!", Duration = 3 })
+   end
+end
+
+-- 1. خيار اختيار لاعب من القائمة لنسخ سكنه
+local DropdownOutfit = TabCopyOutfit:Dropdown({
+   Title = "اختر لاعب من السيرفر لنسخ مظهرة",
+   Values = getPlayerNames(),
+   Callback = function(Option)
+      if Option and Option ~= "" then
+         copyPlayerOutfit(Option)
+      end
+   end
+})
+
+-- زر لتحديث قائمة الأسماء في القائمة المنسدلة
+TabCopyOutfit:Button({ 
+   Title = "🔄 تحديث قائمة اللاعبين لنسخ السكن", 
+   Callback = function() 
+      DropdownOutfit:Refresh(getPlayerNames()) 
+   end 
+})
+
+TabCopyOutfit:Section({ Title = "✍️ نسخ السكن عن طريق الكتابة" })
+
+-- 2. خيار كتابة اسم اللاعب يدوياً (في حال لم يظهر في القائمة)
+local targetInputName = ""
+TabCopyOutfit:Input({
+   Title = "اكتب اسم اللاعب الكامل (Username)",
+   Placeholder = "مثال: Hussain4646767",
+   Callback = function(text) 
+      targetInputName = text 
+   end
+})
+
+TabCopyOutfit:Button({
+   Title = "🎭 اطلب مظهر الاسم المكتوب الآن",
+   Callback = function()
+      if targetInputName ~= "" then
+         copyPlayerOutfit(targetInputName)
+      else
+         WindUI:Notify({ Title = "تنبيه!", Content = "الرجاء كتابة اسم لاعب أولاً!", Duration = 3 })
+      end
+   end
+})
 
 ----------------------------------------------------
 -- [5] قسم نحن نحترم محرم والتوقيت العراقي 🏴
