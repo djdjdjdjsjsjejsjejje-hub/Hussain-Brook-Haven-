@@ -1,10 +1,11 @@
--- Hussein Hub V1 (2026 WindUI Edition)
+-- Hussein Hub V2 (2026 WindUI Edition)
 -- The Ultimate Edition: Exploits, Anti-Flings & Vehicles Unlocked!
+-- تحديث مخصص: قسم نحن نحترم محرم 🏴
 
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local Window = WindUI:CreateWindow({
-   Title = "Hussein Hub V1",
+   Title = "Hussein Hub V2",
    SubTitle = "Brookhaven RP (2026)",
    Author = "by hussain_90_1",
    Size = UDim2.fromOffset(580, 500),
@@ -22,8 +23,34 @@ local function getPlayerNames()
    return names
 end
 
+-- وظيفة جلب الوقت الحالي من جهازك العراقي مباشرة (نظام 12 ساعة مريح)
+local function getIraqTime()
+   local localTime = os.date("*t") -- يقرأ وقت جهازك في العراق فوراً بدون زيادة
+   local hour = localTime.hour
+   local period = "AM"
+   
+   if hour >= 12 then
+      period = "مساءً"
+      if hour > 12 then
+         hour = hour - 12
+      end
+   else
+      period = "صباحاً"
+      if hour == 0 then
+         hour = 12
+      end
+   end
+   
+   return string.format("%02d:%02d:%02d %s", hour, localTime.min, localTime.sec, period)
+end
+
+-- وظيفة جلب التاريخ من جهازك العراقي مباشرة
+local function getIraqDate()
+   return os.date("%Y/%m/%d") -- يقرأ تاريخ جهازك فوراً
+end
+
 ----------------------------------------------------
--- [1] قسم الرئيسية والأسماء الملونة
+-- [1] قسم الرئيسية والأسماء الملونة (V2)
 ----------------------------------------------------
 local TabHome = Window:Tab({ Title = "الرئيسية (RGB)", Icon = "rbxassetid://4483362458" })
 
@@ -36,7 +63,7 @@ TabHome:Toggle({
    Callback = function(state)
       autoColorEnabled = state
       if autoColorEnabled then
-         WindUI:Notify({ Title = "Color Picker", Content = "تم تشغيل محاكاة لوحة الألوان بنجاح!", Duration = 3 })
+         WindUI:Notify({ Title = "Hussein Hub V2", Content = "تم تشغيل محاكاة لوحة الألوان بنجاح!", Duration = 3 })
          task.spawn(function()
             local hue = 0
             while autoColorEnabled do
@@ -47,7 +74,7 @@ TabHome:Toggle({
                   game:GetService("ReplicatedStorage").UpdateColor:FireServer(color)
                   local hexColor = string.format("#%02X%02X%02X", color.R*255, color.G*255, color.B*255)
                   game:GetService("ReplicatedStorage").UpdateName:FireServer("<font color='"..hexColor.."'>حسين</font>")
-                  game:GetService("ReplicatedStorage").UpdateBio:FireServer("<font color='"..hexColor.."'>Hussein Hub V1</font>")
+                  game:GetService("ReplicatedStorage").UpdateBio:FireServer("<font color='"..hexColor.."'>Hussein Hub V2</font>")
                end)
                task.wait(0.3)
             end
@@ -57,7 +84,7 @@ TabHome:Toggle({
 })
 
 ----------------------------------------------------
--- [2] قسم اختراق الجدران والمضادات (الجلد والحماية)
+-- [2] قسم اختراق الجدران والمضادات (V2)
 ----------------------------------------------------
 local TabExploits = Window:Tab({ Title = "الحماية والاختراق", Icon = "rbxassetid://4483362458" })
 
@@ -71,7 +98,7 @@ TabExploits:Toggle({
    Callback = function(state)
       noclipEnabled = state
       if noclipEnabled then
-         WindUI:Notify({ Title = "NoClip", Content = "تم تفعيل اختراق الجدران بنجاح!", Duration = 3 })
+         WindUI:Notify({ Title = "NoClip V2", Content = "تم تفعيل اختراق الجدران بنجاح!", Duration = 3 })
          noclipConnection = game:GetService("RunService").Stepped:Connect(function()
             if noclipEnabled and game.Players.LocalPlayer.Character then
                for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
@@ -81,7 +108,7 @@ TabExploits:Toggle({
          end)
       else
          if noclipConnection then noclipConnection:Disconnect() end
-         WindUI:Notify({ Title = "NoClip", Content = "تم إيقاف اختراق الجدران.", Duration = 3 })
+         WindUI:Notify({ Title = "NoClip V2", Content = "تم إيقاف اختراق الجدران.", Duration = 3 })
       end
    end
 })
@@ -142,13 +169,12 @@ TabExploits:Toggle({
 })
 
 ----------------------------------------------------
--- [3] قسم السيارات الجديد والكامل 🏎️
+-- [3] قسم السيارات الكامل (V2) 🏎️
 ----------------------------------------------------
 local TabVehicles = Window:Tab({ Title = "قسم السيارات", Icon = "rbxassetid://4483362458" })
 
 TabVehicles:Section({ Title = "🚗 رسبون وتحكم بالمركبات" })
 
--- قائمة بأشهر سيارات بروك هافن
 local carList = {"Tesla", "Ferrari", "Mustang", "Jeep", "Supra", "Lamborghini", "Ambulance", "Police Car"}
 local selectedCar = "Tesla"
 
@@ -162,9 +188,8 @@ TabVehicles:Button({
    Title = "🏎️ رسبون السيارة المختارة فوراً",
    Callback = function()
       pcall(function()
-         -- ريموت رسبون السيارات الرسمي في بروك هافن
          game:GetService("ReplicatedStorage").SpawnVehicle:FireServer(selectedCar)
-         WindUI:Notify({ Title = "Car Spawned", Content = "تم رسبنة سيارتك بنجاح! اركبها لتعديل السرعة.", Duration = 3 })
+         WindUI:Notify({ Title = "Car Spawned", Content = "تم رسبنة سيارتك بنجاح!", Duration = 3 })
       end)
    end
 })
@@ -179,9 +204,9 @@ TabVehicles:Button({
       if humanoid and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
          local seat = humanoid.SeatPart
          seat.MaxSpeed = 200
-         seat.Torque = 30000 -- عزم جبار عشان ما تقطع السيارة بالتفحيط
-         seat.TurnSpeed = 25 -- تحسين لفة السيارة على السرعات العالية
-         WindUI:Notify({ Title = "Speed Hack Active", Content = "تم تعديل المحرك! سرعتك الآن 200 حصان حقيقي!", Duration = 4 })
+         seat.Torque = 30000 
+         seat.TurnSpeed = 25 
+         WindUI:Notify({ Title = "Speed Hack Active", Content = "تم تعديل المحرك بنجاح (V2)!", Duration = 4 })
       else
          WindUI:Notify({ Title = "تنبيه!", Content = "يجب أن تكون راكباً داخل مقعد السائق أولاً!", Duration = 4 })
       end
@@ -199,7 +224,7 @@ TabVehicles:Button({
 })
 
 ----------------------------------------------------
--- [4] قسم تعديلات اللاعب ومراقبة السيرفر
+-- [4] قسم تعديلات اللاعب ومراقبة السيرفر (V2)
 ----------------------------------------------------
 local TabPlayer = Window:Tab({ Title = "اللاعب والمراقبة", Icon = "rbxassetid://4483362458" })
 
@@ -231,41 +256,39 @@ TabPlayer:Button({ Title = "🔄 تحديث قائمة اللاعبين", Callba
 TabPlayer:Button({ Title = "❌ إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
 
 ----------------------------------------------------
--- [5] قسم نظام التذكير الذكي
+-- [5] قسم نحن نحترم محرم والتوقيت العراقي 🏴
 ----------------------------------------------------
-local TabReminder = Window:Tab({ Title = "نظام ذكرني", Icon = "rbxassetid://4483362458" })
+local TabMuharram = Window:Tab({ Title = "نحن نحترم محرم", Icon = "rbxassetid://4483362458" })
 
-local reminderText = "حان الوقت!"
-local reminderTime = 10
+TabMuharram:Section({ Title = "⏰ ميقات جمهورية العراق المباشر" })
 
-TabReminder:Input({
-   Title = "اكتب الشيء الذي تريد تذكره",
-   Placeholder = "مثال: سرقة البنك، ركوب السيارة...",
-   Callback = function(text) reminderText = text end
-})
-
-TabReminder:Input({
-   Title = "الوقت قبل التذكير (بالثواني)",
-   Placeholder = "10",
-   Callback = function(num) reminderTime = tonumber(num) or 10 end
-})
-
-TabReminder:Button({
-   Title = "🔔 ابدأ مؤقت التذكير",
+TabMuharram:Button({
+   Title = "عرض تاريخ ووقت العراق الحالي",
    Callback = function()
-      WindUI:Notify({ Title = "تم ضبط التذكير!", Content = "سأقوم بتذكيرك بعد " .. tostring(reminderTime) .. " ثانية.", Duration = 4 })
-      task.spawn(function()
-         task.wait(reminderTime)
-         WindUI:Notify({ Title = "🚨 تذكير هام من حسين! 🚨", Content = reminderText, Duration = 10 })
-         local p = game.Players.LocalPlayer
-         if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-            local sound = Instance.new("Sound", p.Character.HumanoidRootPart)
-            sound.SoundId = "rbxassetid://9114223173"
-            sound.Volume = 2
-            sound:Play()
-            task.wait(3)
-            sound:Destroy()
-         end
+      local currentTime = getIraqTime()
+      local currentDate = getIraqDate()
+      WindUI:Notify({ 
+         Title = "توقيت بغداد المباشر", 
+         Content = "التاريخ: " .. currentDate .. "\nالساعة الآن: " .. currentTime, 
+         Duration = 6 
+      })
+   end
+})
+
+TabMuharram:Section({ Title = "🏴 عبارات الاحترام والتقدير" })
+
+TabMuharram:Button({
+   Title = "إظهار إشعار احترام الشهر الحرام",
+   Callback = function()
+      WindUI:Notify({ 
+         Title = "نحن نحترم محرم 🏴", 
+         Content = "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.", 
+         Duration = 7 
+      })
+      pcall(function()
+         -- تعديل تلقائي محترم للاسم والبايو ليناسب المناسبة
+         game:GetService("ReplicatedStorage").UpdateName:FireServer("<font color='#FF0000'>يا حسين</font>")
+         game:GetService("ReplicatedStorage").UpdateBio:FireServer("<font color='#000000'>نحن نحترم محرم - Hussein Hub V2</font>")
       end)
    end
 })
