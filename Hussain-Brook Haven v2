@@ -50,53 +50,7 @@ local function getIraqDate()
 end
 
 ----------------------------------------------------
-----------------------------------------------------
--- [6] قسم حقوق المطور (حسين) 👑
-----------------------------------------------------
-local TabCredits = Window:Tab({ Title = "حقوق المطور", Icon = "rbxassetid://4483362458" })
-
-TabCredits:Section({ Title = "📱 حسابات المطور الرسمية" })
-
-TabCredits:Button({
-   Title = "👤 تيك توك: hussain_90_1",
-   Callback = function()
-      -- نسخ الحساب تلقائياً لجهاز اللاعب
-      setclipboard("hussain_90_1")
-      WindUI:Notify({ 
-         Title = "تم النسخ!", 
-         Content = "تم نسخ يوزر التيك توك بنجاح، يمكنك الآن البحث عنه ومتابعته.", 
-         Duration = 4 
-      })
-   end
-})
-
-TabCredits:Button({
-   Title = "🎮 روبلوكس: Hussain4646767",
-   Callback = function()
-      -- نسخ الحساب تلقائياً لجهاز اللاعب
-      setclipboard("Hussain4646767")
-      WindUI:Notify({ 
-         Title = "تم النسخ!", 
-         Content = "تم نسخ يوزر الروبلوكس بنجاح، أرسل لي طلب صداقة!", 
-         Duration = 4 
-      })
-   end
-})
-
-TabCredits:Section({ Title = "📝 إصدار السكربت الحصري" })
-TabCredits:Button({
-   Title = "Hussein Hub V2 - 2026 WindUI Edition",
-   Callback = function()
-      WindUI:Notify({ 
-         Title = "شكر خاص", 
-         Content = "شكراً لاستخدامك سكربت حسين المطور V2 لـ بروك هافن.", 
-         Duration = 5 
-      })
-   end
-})
-
-----------------------------------------------------
--- [2] قسم اختراق الجدران والمضادات (V2)
+-- [1] قسم اختراق الجدران والمضادات (V2)
 ----------------------------------------------------
 local TabExploits = Window:Tab({ Title = "الحماية والاختراق", Icon = "rbxassetid://4483362458" })
 
@@ -138,7 +92,7 @@ TabExploits:Toggle({
          task.spawn(function()
             while antiFlingEnabled do
                local char = game.Players.LocalPlayer.Character
-            طيرانcal hrp = char and char:FindFirstChild("HumanoidRootPart")
+               local hrp = char and char:FindFirstChild("HumanoidRootPart") -- تم إصلاح الكلمة المكسورة هنا بنجاح 👍
                local hum = char and char:FindFirstChildOfClass("Humanoid")
                
                if hrp and hum then
@@ -181,28 +135,51 @@ TabExploits:Toggle({
 })
 
 ----------------------------------------------------
--- [3] قسم السيارات الكامل (V2) 🏎️
+-- [2] قسم السيارات الكامل (V2) 🏎️ (تم تعديله بالكامل حسب طلبك)
 ----------------------------------------------------
 local TabVehicles = Window:Tab({ Title = "قسم السيارات", Icon = "rbxassetid://4483362458" })
 
-TabVehicles:Section({ Title = "🚗 رسبون وتحكم بالمركبات" })
-
-local carList = {"Tesla", "Ferrari", "Mustang", "Jeep", "Supra", "Lamborghini", "Ambulance", "Police Car"}
-local selectedCar = "Tesla"
-
-TabVehicles:Dropdown({
-   Title = "اختر السيارة المراد رسبنتها",
-   Values = carList,
-   Callback = function(value) selectedCar = value end
-})
+TabVehicles:Section({ Title = "🥷 سرقة واختطاف المركبات" })
 
 TabVehicles:Button({
-   Title = "🏎️ رسبون السيارة المختارة فوراً",
+   Title = "⚡ سرقة أقرب سيارة في الماب وركوبها فوراً",
    Callback = function()
-      pcall(function()
-         game:GetService("ReplicatedStorage").SpawnVehicle:FireServer(selectedCar)
-         WindUI:Notify({ Title = "Car Spawned", Content = "تم رسبنة سيارتك بنجاح!", Duration = 3 })
-      end)
+      local player = game.Players.LocalPlayer
+      local character = player.Character
+      local hrp = character and character:FindFirstChild("HumanoidRootPart")
+      local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+      
+      if not hrp or not humanoid then
+         WindUI:Notify({ Title = "تنبيه!", Content = "شخصيتك غير محملة بالكامل!", Duration = 3 })
+         return
+      end
+      
+      local closestSeat = nil
+      local shortestDistance = math.huge
+      
+      -- البحث عن مقاعد السيارات الفارغة في الماب
+      for _, v in pairs(workspace:GetDescendants()) do
+         if v:IsA("VehicleSeat") and v.Occupant == nil then
+            local carPrimary = v.Parent
+            if carPrimary and carPrimary:IsA("Model") then
+               local distance = (hrp.Position - v.Position).Magnitude
+               if distance < shortestDistance then
+                  shortestDistance = distance
+                  closestSeat = v
+               end
+            end
+         end
+      end
+      
+      -- إذا وجد سيارة قريبة وقابلة للركوب
+      if closestSeat then
+         hrp.CFrame = closestSeat.CFrame
+         task.wait(0.1)
+         closestSeat:Sit(humanoid)
+         WindUI:Notify({ Title = "Hussein Hub V2", Content = "تمت السرقة بنجاح! أنت الآن السائق.", Duration = 4 })
+      else
+         WindUI:Notify({ Title = "تنبيه!", Content = "لم يتم العثور على أي سيارة فارغة قريبة منك!", Duration = 4 })
+      end
    end
 })
 
@@ -226,7 +203,7 @@ TabVehicles:Button({
 })
 
 ----------------------------------------------------
--- [4] قسم تعديلات اللاعب ومراقبة السيرفر (V2)
+-- [3] قسم تعديلات اللاعب ومراقبة السيرفر (V2)
 ----------------------------------------------------
 local TabPlayer = Window:Tab({ Title = "اللاعب والمراقبة", Icon = "rbxassetid://4483362458" })
 
@@ -256,14 +233,14 @@ local DropdownAR = TabPlayer:Dropdown({
 
 TabPlayer:Button({ Title = "🔄 تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames()) end })
 TabPlayer:Button({ Title = "❌ إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
+
 ----------------------------------------------------
--- [7] قسم نسخ السكنات (Avatar Copier) 🎭
+-- [4] قسم نسخ السكنات (Avatar Copier) 🎭
 ----------------------------------------------------
 local TabCopyOutfit = Window:Tab({ Title = "نسخ السكنات", Icon = "rbxassetid://4483362458" })
 
 TabCopyOutfit:Section({ Title = "🎭 قلد وانسخ سكنات اللاعبين" })
 
--- وظيفة لتطبيق مظهر لاعب آخر على شخصيتك
 local function copyPlayerOutfit(targetName)
    local targetPlayer = game.Players:FindFirstChild(targetName)
    local localPlayer = game.Players.LocalPlayer
@@ -272,7 +249,6 @@ local function copyPlayerOutfit(targetName)
       local localHumanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
       
       if localHumanoid then
-         -- جلب وصف المظهر (Description) الخاص باللاعب المستهدف وتطبيقه
          local pcallSuccess, outfitDescription = pcall(function()
             return game.Players:GetHumanoidDescriptionFromUserId(targetPlayer.UserId)
          end)
@@ -293,7 +269,6 @@ local function copyPlayerOutfit(targetName)
    end
 end
 
--- 1. خيار اختيار لاعب من القائمة لنسخ سكنه
 local DropdownOutfit = TabCopyOutfit:Dropdown({
    Title = "اختر لاعب من السيرفر لنسخ مظهرة",
    Values = getPlayerNames(),
@@ -304,7 +279,6 @@ local DropdownOutfit = TabCopyOutfit:Dropdown({
    end
 })
 
--- زر لتحديث قائمة الأسماء في القائمة المنسدلة
 TabCopyOutfit:Button({ 
    Title = "🔄 تحديث قائمة اللاعبين لنسخ السكن", 
    Callback = function() 
@@ -314,7 +288,6 @@ TabCopyOutfit:Button({
 
 TabCopyOutfit:Section({ Title = "✍️ نسخ السكن عن طريق الكتابة" })
 
--- 2. خيار كتابة اسم اللاعب يدوياً (في حال لم يظهر في القائمة)
 local targetInputName = ""
 TabCopyOutfit:Input({
    Title = "اكتب اسم اللاعب الكامل (Username)",
@@ -336,7 +309,57 @@ TabCopyOutfit:Button({
 })
 
 ----------------------------------------------------
--- [5] قسم نحن نحترم محرم والتوقيت العراقي 🏴
+-- [5] قسم الانتقال والطيران للاعبين (Teleport) 🚀
+----------------------------------------------------
+local TabTeleport = Window:Tab({ Title = "الانتقال للاعبين", Icon = "rbxassetid://4483362458" })
+
+TabTeleport:Section({ Title = "🚀 وانتقال سريع لأي لاعب" })
+
+local selectedTargetPlayer = ""
+
+local DropdownTP = TabTeleport:Dropdown({
+   Title = "اختر لاعب للانتقال إليه",
+   Values = getPlayerNames(),
+   Callback = function(Option)
+      selectedTargetPlayer = Option
+   end
+})
+
+TabTeleport:Button({ 
+   Title = "🔄 تحديث قائمة اللاعبين للانتقال", 
+   Callback = function() 
+      DropdownTP:Refresh(getPlayerNames()) 
+   end 
+})
+
+TabTeleport:Button({
+   Title = "⚡ وانتقال إلى اللاعب المختار فوراً",
+   Callback = function()
+      if selectedTargetPlayer and selectedTargetPlayer ~= "" then
+         local target = game.Players:FindFirstChild(selectedTargetPlayer)
+         local localPlayer = game.Players.LocalPlayer
+         
+         local targetHrp = target and target.Character and target.Character:FindFirstChild("HumanoidRootPart")
+         local localHrp = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+         
+         if targetHrp and localHrp then
+            localHrp.CFrame = targetHrp.CFrame + Vector3.new(0, 5, 0)
+            WindUI:Notify({ 
+               Title = "Hussein Hub V2", 
+               Content = "تم الانتقال بنجاح إلى " .. selectedTargetPlayer, 
+               Duration = 4 
+            })
+         else
+            WindUI:Notify({ Title = "خطأ!", Content = "اللاعب غير موجود أو شخصيته لم تترسبن بعد!", Duration = 3 })
+         end
+      else
+         WindUI:Notify({ Title = "تنبيه!", Content = "الرجاء اختيار لاعب من القائمة أولاً!", Duration = 3 })
+      end
+   end
+})
+
+----------------------------------------------------
+-- [6] قسم نحن نحترم محرم والتوقيت العراقي 🏴
 ----------------------------------------------------
 local TabMuharram = Window:Tab({ Title = "نحن نحترم محرم", Icon = "rbxassetid://4483362458" })
 
@@ -354,59 +377,6 @@ TabMuharram:Button({
       })
    end
 })
-----------------------------------------------------
--- [8] قسم الانتقال والطيران للاعبين (Teleport) 🚀
-----------------------------------------------------
-local TabTeleport = Window:Tab({ Title = "الانتقال للاعبين", Icon = "rbxassetid://4483362458" })
-
-TabTeleport:Section({ Title = "🚀 وانتقال سريع لأي لاعب" })
-
-local selectedTargetPlayer = ""
-
--- قائمة منسدلة لاختيار اللاعب المستهدف
-local DropdownTP = TabTeleport:Dropdown({
-   Title = "اختر لاعب للانتقال إليه",
-   Values = getPlayerNames(),
-   Callback = function(Option)
-      selectedTargetPlayer = Option
-   end
-})
-
--- زر لتحديث قائمة أسماء اللاعبين
-TabTeleport:Button({ 
-   Title = "🔄 تحديث قائمة اللاعبين للانتقال", 
-   Callback = function() 
-      DropdownTP:Refresh(getPlayerNames()) 
-   end 
-})
-
--- زر تنفيذ الانتقال الفوري
-TabTeleport:Button({
-   Title = "⚡ وانتقال إلى اللاعب المختار فوراً",
-   Callback = function()
-      if selectedTargetPlayer and selectedTargetPlayer ~= "" then
-         local target = game.Players:FindFirstChild(selectedTargetPlayer)
-         local localPlayer = game.Players.LocalPlayer
-         
-         local targetHrp = target and target.Character and target.Character:FindFirstChild("HumanoidRootPart")
-         local localHrp = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
-         
-         if targetHrp and localHrp then
-            -- الانتقال فوق رأس اللاعب المستهدف بقليل لتجنب الغليتشات
-            localHrp.CFrame = targetHrp.CFrame + Vector3.new(0, 5, 0)
-            WindUI:Notify({ 
-               Title = "Hussein Hub V2", 
-               Content = "تم الانتقال بنجاح إلى " .. selectedTargetPlayer, 
-               Duration = 4 
-            })
-         else
-            WindUI:Notify({ Title = "خطأ!", Content = "اللاعب غير موجود أو شخصيته لم تترسبن بعد!", Duration = 3 })
-         end
-      else
-         WindUI:Notify({ Title = "تنبيه!", Content = "الرجاء اختيار لاعب من القائمة أولاً!", Duration = 3 })
-      end
-   end
-})
 
 TabMuharram:Section({ Title = "🏴 عبارات الاحترام والتقدير" })
 
@@ -419,9 +389,51 @@ TabMuharram:Button({
          Duration = 7 
       })
       pcall(function()
-         -- تعديل تلقائي محترم للاسم والبايو ليناسب المناسبة
          game:GetService("ReplicatedStorage").UpdateName:FireServer("<font color='#FF0000'>يا حسين</font>")
          game:GetService("ReplicatedStorage").UpdateBio:FireServer("<font color='#000000'>نحن نحترم محرم - Hussein Hub V2</font>")
       end)
+   end
+})
+
+----------------------------------------------------
+-- [7] قسم حقوق المطور (حسين) 👑
+----------------------------------------------------
+local TabCredits = Window:Tab({ Title = "حقوق المطور", Icon = "rbxassetid://4483362458" })
+
+TabCredits:Section({ Title = "📱 حسابات المطور الرسمية" })
+
+TabCredits:Button({
+   Title = "👤 تيك توك: hussain_90_1",
+   Callback = function()
+      setclipboard("hussain_90_1")
+      WindUI:Notify({ 
+         Title = "تم النسخ!", 
+         Content = "تم نسخ يوزر التيك توك بنجاح، يمكنك الآن البحث عنه ومتابعته.", 
+         Duration = 4 
+      })
+   end
+})
+
+TabCredits:Button({
+   Title = "🎮 روبلوكس: Hussain4646767",
+   Callback = function()
+      setclipboard("Hussain4646767")
+      WindUI:Notify({ 
+         Title = "تم النسخ!", 
+         Content = "تم نسخ يوزر الروبلوكس بنجاح، أرسل لي طلب صداقة!", 
+         Duration = 4 
+      })
+   end
+})
+
+TabCredits:Section({ Title = "📝 إصدار السكربت الحصري" })
+TabCredits:Button({
+   Title = "Hussein Hub V2 - 2026 WindUI Edition",
+   Callback = function()
+      WindUI:Notify({ 
+         Title = "شكر خاص", 
+         Content = "شكراً لاستخدامك سكربت حسين المطور V2 لـ بروك هافن.", 
+         Duration = 5 
+      })
    end
 })
