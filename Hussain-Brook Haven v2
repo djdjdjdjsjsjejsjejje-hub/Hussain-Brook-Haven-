@@ -1,6 +1,6 @@
 -- Hussein Hub V2 (2026 WindUI Edition)
 -- The Ultimate Edition: Exploits, Anti-Flings & Vehicles Unlocked!
--- تحديث مخصص: قسم نحن نحترم محرم 🏴
+-- تحديث مخصص: قسم نحن نحترم محرم 
 
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
@@ -54,7 +54,7 @@ end
 ----------------------------------------------------
 local TabExploits = Window:Tab({ Title = "الحماية والاختراق", Icon = "rbxassetid://4483362458" })
 
-TabExploits:Section({ Title = "🔓 ميزة اختراق الجدران" })
+TabExploits:Section({ Title = " ميزة اختراق الجدران" })
 
 local noclipEnabled = false
 local noclipConnection
@@ -79,7 +79,7 @@ TabExploits:Toggle({
    end
 })
 
-TabExploits:Section({ Title = "🛡️ مضادات الطيران والكنب والسفن" })
+TabExploits:Section({ Title = "مضادات الطيران والكنب والسفن" })
 
 local antiFlingEnabled = false
 TabExploits:Toggle({
@@ -135,14 +135,14 @@ TabExploits:Toggle({
 })
 
 ----------------------------------------------------
--- [2] قسم السيارات الكامل (V2) 🏎️ (تم تعديله بالكامل حسب طلبك)
+-- [2] قسم السيارات الكامل (V2)  (تم تعديله بالكامل حسب طلبك)
 ----------------------------------------------------
 local TabVehicles = Window:Tab({ Title = "قسم السيارات", Icon = "rbxassetid://4483362458" })
 
-TabVehicles:Section({ Title = "🥷 سرقة واختطاف المركبات" })
+TabVehicles:Section({ Title = "سرقة واختطاف المركبات" })
 
 TabVehicles:Button({
-   Title = "⚡ سرقة أقرب سيارة في الماب وركوبها فوراً",
+   Title = " سرقة أقرب سيارة في الماب وركوبها فوراً",
    Callback = function()
       local player = game.Players.LocalPlayer
       local character = player.Character
@@ -183,10 +183,10 @@ TabVehicles:Button({
    end
 })
 
-TabVehicles:Section({ Title = "⚡ هكر السرعة الخارقة للسيارات" })
+TabVehicles:Section({ Title = " هكر السرعة الخارقة للسيارات" })
 
 TabVehicles:Button({
-   Title = "🚀 جعل سرعة سيارتك الحالية 200 (تعديل العزم الحقيقي)",
+   Title = " جعل سرعة سيارتك الحالية 200 (تعديل العزم الحقيقي)",
    Callback = function()
       local char = game.Players.LocalPlayer.Character
       local humanoid = char and char:FindFirstChildOfClass("Humanoid")
@@ -207,7 +207,7 @@ TabVehicles:Button({
 ----------------------------------------------------
 local TabPlayer = Window:Tab({ Title = "اللاعب والمراقبة", Icon = "rbxassetid://4483362458" })
 
-TabPlayer:Section({ Title = "👟 تعديلات السرعة شورت" })
+TabPlayer:Section({ Title = " تعديلات السرعة شورت" })
 TabPlayer:Button({
    Title = "Super WalkSpeed (سرعة شخصية خارقة)",
    Callback = function()
@@ -217,7 +217,7 @@ TabPlayer:Button({
    end
 })
 
-TabPlayer:Section({ Title = "👁️ مراقبة السيرفر واللاعبين" })
+TabPlayer:Section({ Title = "مراقبة السيرفر واللاعبين" })
 local DropdownAR = TabPlayer:Dropdown({
    Title = "اختر لاعب لمراقبته عن بعد",
    Values = getPlayerNames(),
@@ -231,15 +231,15 @@ local DropdownAR = TabPlayer:Dropdown({
    end
 })
 
-TabPlayer:Button({ Title = "🔄 تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames()) end })
-TabPlayer:Button({ Title = "❌ إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
+TabPlayer:Button({ Title = " تحديث قائمة اللاعبين", Callback = function() DropdownAR:Refresh(getPlayerNames()) end })
+TabPlayer:Button({ Title = " إلغاء المراقبة والعودة لشخصيتك", Callback = function() workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") end })
 
 ----------------------------------------------------
--- [4] قسم نسخ السكنات (Avatar Copier) 🎭
+-- [4] قسم نسخ السكنات (Avatar Copier) 
 ----------------------------------------------------
 local TabCopyOutfit = Window:Tab({ Title = "نسخ السكنات", Icon = "rbxassetid://4483362458" })
 
-TabCopyOutfit:Section({ Title = "🎭 قلد وانسخ سكنات اللاعبين" })
+TabCopyOutfit:Section({ Title = " قلد وانسخ سكنات اللاعبين" })
 
 local function copyPlayerOutfit(targetName)
    local targetPlayer = game.Players:FindFirstChild(targetName)
@@ -280,13 +280,13 @@ local DropdownOutfit = TabCopyOutfit:Dropdown({
 })
 
 TabCopyOutfit:Button({ 
-   Title = "🔄 تحديث قائمة اللاعبين لنسخ السكن", 
+   Title = " تحديث قائمة اللاعبين لنسخ السكن", 
    Callback = function() 
       DropdownOutfit:Refresh(getPlayerNames()) 
    end 
 })
 
-TabCopyOutfit:Section({ Title = "✍️ نسخ السكن عن طريق الكتابة" })
+TabCopyOutfit:Section({ Title = " نسخ السكن عن طريق الكتابة" })
 
 local targetInputName = ""
 TabCopyOutfit:Input({
@@ -298,7 +298,7 @@ TabCopyOutfit:Input({
 })
 
 TabCopyOutfit:Button({
-   Title = "🎭 اطلب مظهر الاسم المكتوب الآن",
+   Title = " اطلب مظهر الاسم المكتوب الآن",
    Callback = function()
       if targetInputName ~= "" then
          copyPlayerOutfit(targetInputName)
@@ -309,11 +309,11 @@ TabCopyOutfit:Button({
 })
 
 ----------------------------------------------------
--- [5] قسم الانتقال والطيران للاعبين (Teleport) 🚀
+-- [5] قسم الانتقال والطيران للاعبين (Teleport) 
 ----------------------------------------------------
 local TabTeleport = Window:Tab({ Title = "الانتقال للاعبين", Icon = "rbxassetid://4483362458" })
 
-TabTeleport:Section({ Title = "🚀 وانتقال سريع لأي لاعب" })
+TabTeleport:Section({ Title = " وانتقال سريع لأي لاعب" })
 
 local selectedTargetPlayer = ""
 
@@ -326,14 +326,14 @@ local DropdownTP = TabTeleport:Dropdown({
 })
 
 TabTeleport:Button({ 
-   Title = "🔄 تحديث قائمة اللاعبين للانتقال", 
+   Title = " تحديث قائمة اللاعبين للانتقال", 
    Callback = function() 
       DropdownTP:Refresh(getPlayerNames()) 
    end 
 })
 
 TabTeleport:Button({
-   Title = "⚡ وانتقال إلى اللاعب المختار فوراً",
+   Title = " وانتقال إلى اللاعب المختار فوراً",
    Callback = function()
       if selectedTargetPlayer and selectedTargetPlayer ~= "" then
          local target = game.Players:FindFirstChild(selectedTargetPlayer)
@@ -359,11 +359,11 @@ TabTeleport:Button({
 })
 
 ----------------------------------------------------
--- [6] قسم نحن نحترم محرم والتوقيت العراقي 🏴
+-- [6] قسم نحن نحترم محرم والتوقيت العراقي 
 ----------------------------------------------------
 local TabMuharram = Window:Tab({ Title = "نحن نحترم محرم", Icon = "rbxassetid://4483362458" })
 
-TabMuharram:Section({ Title = "⏰ ميقات جمهورية العراق المباشر" })
+TabMuharram:Section({ Title = " ميقات جمهورية العراق المباشر" })
 
 TabMuharram:Button({
    Title = "عرض تاريخ ووقت العراق الحالي",
@@ -378,13 +378,13 @@ TabMuharram:Button({
    end
 })
 
-TabMuharram:Section({ Title = "🏴 عبارات الاحترام والتقدير" })
+TabMuharram:Section({ Title = " عبارات الاحترام والتقدير" })
 
 TabMuharram:Button({
    Title = "إظهار إشعار احترام الشهر الحرام",
    Callback = function()
       WindUI:Notify({ 
-         Title = "نحن نحترم محرم 🏴", 
+         Title = "نحن نحترم محرم ", 
          Content = "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.", 
          Duration = 7 
       })
@@ -396,14 +396,14 @@ TabMuharram:Button({
 })
 
 ----------------------------------------------------
--- [7] قسم حقوق المطور (حسين) 👑
+-- [7] قسم حقوق المطور (حسين) 
 ----------------------------------------------------
 local TabCredits = Window:Tab({ Title = "حقوق المطور", Icon = "rbxassetid://4483362458" })
 
-TabCredits:Section({ Title = "📱 حسابات المطور الرسمية" })
+TabCredits:Section({ Title = "حسابات المطور الرسمية" })
 
 TabCredits:Button({
-   Title = "👤 تيك توك: hussain_90_1",
+   Title = " تيك توك: hussain_90_1",
    Callback = function()
       setclipboard("hussain_90_1")
       WindUI:Notify({ 
@@ -415,7 +415,7 @@ TabCredits:Button({
 })
 
 TabCredits:Button({
-   Title = "🎮 روبلوكس: Hussain4646767",
+   Title = "روبلوكس: Hussain4646767",
    Callback = function()
       setclipboard("Hussain4646767")
       WindUI:Notify({ 
@@ -426,7 +426,7 @@ TabCredits:Button({
    end
 })
 
-TabCredits:Section({ Title = "📝 إصدار السكربت الحصري" })
+TabCredits:Section({ Title = "إصدار السكربت الحصري" })
 TabCredits:Button({
    Title = "Hussein Hub V2 - 2026 WindUI Edition",
    Callback = function()
