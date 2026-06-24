@@ -1,5 +1,3 @@
--- Hussein Hub V2 (2026 WindUI Edition)
--- التحديث العالمي: نظام الكشف التلقائي والدقيق لليالي شهر محرم الحرام لعام 2026
 
 local success, WindUI = pcall(function()
    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/Source.lua"))()
@@ -28,24 +26,6 @@ local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 
--- وظيفة جلب الوقت الحالي بتوقيت العراق
-local function getIraqTime()
-   local localTime = os.date("*t")
-   local hour = localTime.hour
-   local period = "AM"
-   if hour >= 12 then
-      period = "مساءً"
-      if hour > 12 then hour = hour - 12 end
-   else
-      period = "صباحاً"
-      if hour == 0 then hour = 12 end
-   end
-   return string.format("%02d:%02d:%02d %s", hour, localTime.min, localTime.sec, period)
-end
-
-local function getIraqDate()
-   return os.date("%Y/%m/%d")
-end
 ----------------------------------------------------
 -- [1] قسم تحديث الشرطة الجديد و S.W.A.T
 ----------------------------------------------------
@@ -242,42 +222,24 @@ TabExploits:Toggle({
 })
 
 ----------------------------------------------------
--- [6] قسم نحن نحترم محرم (المحدث تلبية لطلبك)
-----------------------------------------------------
-local TabMuharram = Window:Tab({ Title = "نحن نحترم محرم", Icon = "rbxassetid://4483362458" })
+-- افترض أن لديك TextBox اسمه "PlayerNameBox"
+-- وهذا الزر اسمه "TPButton"
 
-TabMuharram:Section({ Title = " ميقات جمهورية العراق والمناسبة المباشرة" })
-TabMuharram:Button({
-   Title = "كشف ليلة محرم الحرام الحالية تلقائياً",
-   Callback = function()
-      local currentNight = getMuharramNight()
-      WindUI:Notify({ 
-         Title = "الحساب العالمي لليالي عاشوراء", 
-         Content = "اليوم هو: " .. getIraqDate() .. "\n" .. currentNight, 
-         Duration = 7 
-      })
-   end
-})
-
-TabMuharram:Section({ Title = " عبارات الاحترم والتقدير وتغيير اللقب" })
-TabMuharram:Button({
-   Title = "إظهار إشعار العزاء وتحديث الاسم والبيو",
-   Callback = function()
-      local currentNight = getMuharramNight()
-      
-      WindUI:Notify({ 
-         Title = "نحن نحترم محرم", 
-         Content = "عظم الله أجورنا وأجوركم بمصاب أبا عبد الله الحسين عليه السلام.\nنحن حالياً في: " .. currentNight, 
-         Duration = 8 
-      })
-      
-      -- تحديث الاسم والبيو داخل سيرفر بروك هافن ليتوافق مع ليلة العزاء الحالية
-      pcall(function()
-         ReplicatedStorage.UpdateName:FireServer("<font color='#FF0000'>يا حسين</font>")
-         ReplicatedStorage.UpdateBio:FireServer("<font color='#000000'>نحن نحترم محرم - " .. currentNight .. "</font>")
-      end)
-   end
-})
+TPButton.MouseButton1Down:connect(function()
+    local targetName = PlayerNameBox.Text -- الاسم المكتوب في المربع
+    local targetPlayer = game.Players:FindFirstChild(targetName)
+    
+    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local myHRP = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if myHRP then
+            -- ينتقل إلى موقع اللاعب
+            myHRP.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
+        end
+    else
+        -- إذا لم يجد اللاعب
+        print("اللاعب غير موجود أو لا يمكن الوصول إليه")
+    end
+end)
 
 ----------------------------------------------------
 -- [7] قسم الحقوق (حسين - hussain_90_1)
